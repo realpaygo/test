@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-light: #f5f5f5;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #fff;
+      --card-light: #fff;
+      --card-dark: #1e1e1e;
+      --primary: #1a73e8;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: 0.3s ease;
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    header {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    /* Top buttons */
+    .top-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .top-buttons button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      transition: 0.3s ease;
+    }
+    .top-buttons button:hover {
+      opacity: 0.9;
+    }
+    .container {
+      padding: 0 20px 40px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      font-size: 18px;
+      text-align: center;
+      color: var(--primary);
+    }
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--card-light);
+      padding: 25px 15px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+    body.dark .service-card {
+      background: var(--card-dark);
+      box-shadow: 0 4px 6px rgba(255,255,255,0.05);
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+    }
+    .service-card i {
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .service-card h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+    /* WhatsApp button */
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 15px;
+      right: 20px;
+      background: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .whatsapp-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Dashboard
+  </header>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+
+  <!-- Top Buttons -->
+  <div class="top-buttons">
+    <button onclick="menuClicked()"><i class="fa-solid fa-bars"></i> Menu</button>
+    <button onclick="historyClicked()"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+  </div>
+
+  <div class="container">
+    <h2>Available Services</h2>
+    <div class="services">
+      <div class="service-card" onclick="goToReceipt()">
+        <i class="fa-solid fa-file-invoice"></i>
+        <h3>Bank Receipt</h3>
+      </div>
+      <div class="service-card" onclick="comingSoon('Opay Clone')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Opay Clone</h3>
+      </div>
+      <div class="service-card" onclick="comingSoon('PalmPay Clone')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>PalmPay Clone</h3>
+      </div>
+      <div class="service-card" onclick="comingSoon('Kuda Clone')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Kuda Clone</h3>
+      </div>
+      <div class="service-card" onclick="comingSoon('Download')">
+        <i class="fa-solid fa-download"></i>
+        <h3>Download</h3>
+      </div>
+      <div class="service-card" onclick="goToChannel()">
+        <i class="fa-brands fa-telegram"></i>
+        <h3>Channel</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp floating button -->
+  <a href="https://wa.me/2349020388011" class="whatsapp-btn" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script>
+    function goToReceipt() {
+      window.location.href = "select-bank.html";
+    }
+
+    function comingSoon(service) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Coming Soon',
+        text: service + ' is not available yet. Stay tuned!',
+        confirmButtonColor: '#1a73e8'
+      });
+    }
+
+    function menuClicked() {
+      Swal.fire({
+        title: '📌 Menu',
+        html: `
+          <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
+            <button onclick="goHome()" style="padding:10px; border:none; border-radius:6px; background:#1a73e8; color:#fff; cursor:pointer; font-size:15px;">
+              🏠 Home
+            </button>
+            <button onclick="goToChannel()" style="padding:10px; border:none; border-radius:6px; background:#0088cc; color:#fff; cursor:pointer; font-size:15px;">
+              📢 Channel
+            </button>
+            <button onclick="showDeveloper()" style="padding:10px; border:none; border-radius:6px; background:#4caf50; color:#fff; cursor:pointer; font-size:15px;">
+              👨‍💻 Developer
+            </button>
+          </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true,
+        focusConfirm: false,
+        width: 300
+      });
+    }
+
+    function goHome() {
+      window.location.href = "index.html"; 
+    }
+
+    function goToChannel() {
+      window.open("https://t.me/cyber_space01", "_blank");
+    }
+
+    function showDeveloper() {
+      Swal.fire({
+        icon: 'info',
+        title: '👨‍💻 Developer',
+        html: `
+          <p>Developed by <b>Cyber Space</b></p>
+          <p>Contact via WhatsApp:</p>
+          <a href="https://wa.me/2349020388011" target="_blank" style="color:#1a73e8; font-weight:bold;">Chat on WhatsApp</a>
+        `,
+        confirmButtonColor: '#1a73e8'
+      });
+    }
+
+    function historyClicked() {
+      Swal.fire('History Button Clicked', 'Show transaction history here.', 'info');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".theme-toggle i");
+      if (document.body.classList.contains("dark")) {
+        btn.classList.replace("fa-moon", "fa-sun");
+      } else {
+        btn.classList.replace("fa-sun", "fa-moon");
+      }
+    }
+
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Bank Receipt</title>
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-light: #f5f5f5;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #fff;
+      --card-light: #fff;
+      --card-dark: #1e1e1e;
+      --primary: #1a73e8;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: 0.3s ease;
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    header {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    .banks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+    .bank-card {
+      background: var(--card-light);
+      padding: 25px 15px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+    body.dark .bank-card {
+      background: var(--card-dark);
+      box-shadow: 0 4px 6px rgba(255,255,255,0.05);
+    }
+    .bank-card:hover {
+      transform: translateY(-4px);
+    }
+    .bank-card i {
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .bank-card h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Select Bank Receipt
+  </header>
+
+  <div class="container">
+    <h2>Choose a Bank</h2>
+    <div class="banks">
+      <div class="bank-card" onclick="goToReceipt('palmpay-form.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>PalmPay</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('opay-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Opay</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('access-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Access Bank</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('fidelity-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Fidelity Bank</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('firstbank-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>First Bank</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('kuda-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Kuda Bank</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('moniepoint-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Moniepoint</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('gtbank-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>GT Bank</h3>
+      </div>
+      <div class="bank-card" onclick="goToReceipt('zenith-receipt.html')">
+        <i class="fa-solid fa-building-columns"></i>
+        <h3>Zenith Bank</h3>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goToReceipt(page) {
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>
