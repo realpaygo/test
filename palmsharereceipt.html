@@ -352,7 +352,8 @@ body {
         }
         // Amount
         if (data.amount) {
-          document.getElementById('receiptAmount').textContent = '₦' + Number(data.amount).toLocaleString();
+          var formattedAmount = Number(data.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          document.getElementById('receiptAmount').textContent = '₦' + formattedAmount;
         }
         // Completion time
         var now = new Date();
