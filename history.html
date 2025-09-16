@@ -64,7 +64,11 @@
         li.innerHTML = `<div class='history-title'>${item.beneficiaryName}</div><div class='history-date'>${item.date}</div>`;
         li.onclick = function() {
           localStorage.setItem('receiptData', JSON.stringify(item));
-          window.location.href = 'palmreceipt.html';
+          if (item.type === 'opay') {
+            window.location.href = 'opayreceipt.html';
+          } else {
+            window.location.href = 'palmreceipt.html';
+          }
         };
         list.appendChild(li);
       });

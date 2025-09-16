@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Transaction Details</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f8fb;
+      color: #212121;
+      line-height: 1.5;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f8f8fb;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .back-arrow {
+      font-size: 22px;
+      color: #000000;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .header-title {
+      flex-grow: 1;
+      font-size: 16px;
+      color: #212121;
+      font-weight: 400;
+    }
+
+    /* ImageView menu icon */
+    .menu-icon {
+      width: 29px;
+      height: 29px;
+      cursor: pointer;
+    }
+
+    /* Scrollable content */
+    .scroll-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      padding: 10px;
+    }
+
+    /* Profile circle */
+    .profile-image img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: -30px auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-image i {
+      font-size: 26px;
+      color: #00b876;
+    }
+
+    /* Amount + Status */
+    .amount-section {
+      text-align: center;
+      padding-top: 5px;
+    }
+
+    .transfer-text {
+      font-size: 14px;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+
+    .amount {
+      font-size: 26px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 4px;
+    }
+
+    .status {
+      font-size: 15px;
+      font-weight: 400;
+    }
+    
+    .status-success {
+      color: #00b876;
+    }
+    
+    .status-pending {
+      color: #ff9800;
+    }
+    
+    .status-failed {
+      color: #f44336;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0 10px;
+      width: 215px;
+    }
+
+    .timeline-dot {
+      width: 15px;
+      height: 15px;
+      object-fit: cover;
+    }
+
+    .timeline-line {
+      height: 1px;
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+    
+    .timeline-line-success {
+      background: #00b876;
+    }
+    
+    .timeline-line-pending {
+      background: #cccccc;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .timeline-label {
+      flex: 1;
+      text-align: center;
+    }
+
+    .label-title {
+      font-size: 12px;
+      color: #616161;
+      line-height: 1.2;
+    }
+
+    .label-time {
+      font-size: 12px;
+      color: #9e9e9e;
+      margin-top: 2px;
+    }
+
+    /* Transaction details rows */
+    .divider {
+      height: 1px;
+      background: #eeeeee;
+      margin: 12px 0;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
+    .detail-label {
+      font-size: 13px;
+      color: #9e9e9e;
+      flex: 1;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      color: #424242;
+      font-weight: 400;
+      text-align: right;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #000000;
+      margin-bottom: 4px;
+    }
+
+    /* Footer wrapper */
+    .footer {
+      background: #f8f8fb;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .action-buttons {
+      display: flex;
+      padding: 12px;
+      gap: 12px;
+      padding-bottom: 20px;
+    }
+
+    .button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .button-outline {
+      background: #E9F7EF;
+      color: #00b876;
+      border-radius: 50px;
+    }
+
+    .button-solid {
+      background: #00b876;
+      color: #ffffff;
+      border: none;
+      border-radius: 50px;
+    }
+
+    .dispute-button {
+      padding: 12px;
+      text-align: center;
+    }
+
+    .dispute {
+      color: #00b876;
+      border-radius: 50px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #E9F7EF;
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .icon-small {
+      font-size: 12px;
+      margin-left: 4px;
+      color: #9e9e9e;
+    }
+
+    /* Action Items */
+    .action-row {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+    .action-label {
+      flex: 1;
+      font-size: 13px;
+      color: #9E9E9E;
+      margin-left: 8px;
+    }
+    .action-value {
+      font-size: 13px;
+      color: #000;
+      margin-right: 8px;
+    }
+
+    /* More Actions */
+    .more-actions {
+      display: flex;
+      margin-top: 0px;
+    }
+    .action-item {
+      display: flex;
+      align-items: center;
+      color: #00B876;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .action-icon {
+      width: 20px;
+      height: 20px;
+      background-color: #00B876;
+      border-radius: 4px;
+      margin-right: 5px;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: #fff;
+      margin: 0px 2px;
+      border-radius: 8px;
+      padding: 15px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: #E0E0E0;
+      margin: 15px 0;
+      text-align: center;
+      position: relative;
+    }
+    .divider-text {
+      display: inline-block;
+      background: #fff;
+      padding: 0 0px;
+      position: relative;
+      top: -10px;
+      color: #E0E0E0;
+      font-size: 12px;
+    }
+    
+    /* Bubble Section */
+     :root{
+      --bubble-bg: #f6f8f8;
+      --text-gray: #7f8b8b;
+      --link-green: #04c08a;
+      --bubble-radius: 20px;
+      --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height: auto;
+      margin: 5px;
+    }
+
+    .bubble{
+      max-width: 999px;
+      background: var(--bubble-bg);
+      border-radius: var(--bubble-radius);
+      padding: 12px;
+      box-shadow: none;
+      margin:0;
+      font-size: 10px;
+      line-height: 1.1;
+      color: var(--text-gray);
+      font-weight:400;
+      letter-spacing:0.0px;
+    }
+
+    
+    .bubble a{
+      color: var(--link-green);
+      text-decoration: none;
+      font-weight:400;
+      margin-left:4px;
+    }
+
+    .chev {
+      margin-left:4px;
+      margin-right:4px;
+      color: var(--link-green);
+      font-weight:600;
+    }
+
+    .phone-icon{
+      display:inline-block;
+      vertical-align: middle;
+      
+      color: var(--link-green);
+      font-size:10px;
+    }
+
+    @media (max-width:480px){
+      .bubble{ padding:10px; border-radius:16px; }
+      .bubble p{ font-size:12px; }
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+   
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="back-arrow">‹</div>
+      <div class="header-title">Transaction Details</div>
+      <img src="images/history/support.png" alt="menu" class="menu-icon" />
+    </div>
+
+    
+    <!-- Main Content -->
+    <div class="scroll-view">
+      <div class="card" style="margin-top: 20px;">
+        <div class="profile-image"><img src="images/history/logo.png" alt=""></div>
+        <div class="amount-section">
+          <div class="transfer-text">Transfer to POS Transfer - ABDULKADIR YUSUF</div>
+          <div class="amount">₦2,000.00</div>
+          <div class="status status-success">Successful</div>
+        </div>
+        <center>
+          <div class="timeline">
+            <img src="images/history/tick.png" alt="dot" class="timeline-dot" />
+            <div class="timeline-line timeline-line-success"></div>
+            <img src="images/history/tick.png" alt="dot" class="timeline-dot" />
+            <div class="timeline-line timeline-line-success"></div>
+            <img src="images/history/tick.png" alt="dot" class="timeline-dot" />
+          </div>
+        </center>
+        <div class="timeline-labels">
+          <div class="timeline-label">
+            <div class="label-title">Payment<br />Successful</div>
+            <div class="label-time">02-23 07:09:56</div>
+          </div>
+          <div class="timeline-label">
+            <div class="label-title">Processing<br/>by bank</div>
+            <div class="label-time">02-23 07:09:56</div>
+          </div>
+          <div class="timeline-label">
+            <div class="label-title">Received<br />by bank</div>
+            <div class="label-time">02-23 07:09:56</div>
+          </div>
+        </div>
+        
+        <div class="wrap" role="note" aria-label="Bank credit notice">
+          <div class="bubble">
+            
+              The recipient account is expected to be credited within 5 minutes, subject to notification by the bank. If you have any questions, you can also
+              <a href="#" onclick="return false;">contact the recipient bank</a>
+              <span class="chev">&gt;&gt;</span>
+              <i class="fas fa-phone phone-icon" aria-hidden="true"></i>
+            
+          </div>
+        </div>
+       
+
+        <div class="detail-row">
+          <div class="detail-label">Amount</div>
+          <div class="detail-value">₦3,000.00</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Fee</div>
+          <div class="detail-value"><span style="color: #D3D3D3 ; text-decoration: line-through; margin-right: 3px;">₦10.00</span>₦10.00</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Amount Paid</div>
+          <div class="detail-value">₦2,010.00</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Transaction Details</div>
+        <div class="detail-row">
+          <div class="detail-label">Recipient Details</div>
+          <div class="detail-value" style="line-height:1.4; text-align:right;">
+            WEB TECH<br>
+            <span style="font-size:12px; color:#616161;">United Bank For Africa | 915****789</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-label">Transaction No.</div>
+          <div class="detail-value">
+            250225010100418357292729 <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Payment Method</div>
+          <div class="detail-value">Wallet <i class="fas fa-angle-right"></i></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Transaction Date</div>
+          <div class="detail-value">Feb 25th, 2025 08:19:56</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Session ID</div>
+          <div class="detail-value">
+            100004250223182413127782423243
+            <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">
+          </div>
+        </div>
+      </div>
+
+      <!-- More Actions Section -->
+      <div class="content-section" id="legSection">
+        <div class="section-title">More Actions</div>
+        <div class="action-row">
+          <div class="action-label">Choose Category</div>
+          <div class="action-value">Transfer</div>
+          <span class="material-icons" style="color: grey;">chevron_right</span>
+        </div>
+        <center>
+          <span class="divider-text">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span>
+        </center>
+        <div class="more-actions">
+          <div class="action-item" onclick="transferBack()">
+            <img src="images/history/transfer.png" style="width: 20px; height: 20px;" alt="transfer">
+            <span>Transfer Back</span>
+          </div>
+          <div class="action-item" onclick="viewRecords()"><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="action-buttons">
+        <div class="button button-outline">Report an issue</div>
+  <div class="button button-solid" onclick="window.location.href='opaysharereceipt.html'">Share Receipt</div>
+      </div>
+      <div class="dispute-button hidden">
+        <div class="dispute">Dispute</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample transaction data (in a real app, this would come from an API)
+    let transactionData = {
+      id: "250225010100418357292729",
+      amount: 2000.00,
+      fee: 10.00,
+      amountPaid: 2010.00,
+      recipientName: "ABDULKADIR YUSUF",
+      recipientDetails: {
+        name: "WEB TECH",
+        bank: "United Bank For Africa",
+        account: "915****780"
+      },
+      transactionDate: "Feb 25th, 2025 08:19:56",
+      sessionId: "100004250223182413127782423243",
+      status: "success", // "success", "failed", or "pending"
+      timeline: {
+        payment: "02-23 07:09:56",
+        processing: "02-23 07:09:56",
+        received: "02-23 07:09:56"
+      }
+    };
+
+    // Function to update all receipt details
+    function updateReceiptDetails() {
+      // Update transaction details
+      document.querySelector('.amount').textContent = `₦${transactionData.amount.toLocaleString()}`;
+      document.querySelector('.transfer-text').textContent = `Transfer to POS Transfer - ${transactionData.recipientName}`;
+      document.querySelectorAll('.detail-value')[0].textContent = `₦${(transactionData.amount + 1000).toLocaleString()}`;
+      document.querySelectorAll('.detail-value')[1].innerHTML = `<span style="color: #D3D3D3 ; text-decoration: line-through; margin-right: 3px;">₦${transactionData.fee.toLocaleString()}</span>₦${transactionData.fee.toLocaleString()}`;
+      document.querySelectorAll('.detail-value')[2].textContent = `₦${transactionData.amountPaid.toLocaleString()}`;
+      
+      // Update recipient details
+      const recipientElement = document.querySelectorAll('.detail-value')[3];
+      recipientElement.innerHTML = `${transactionData.recipientDetails.name}<br><span style="font-size:12px; color:#616161;">${transactionData.recipientDetails.bank} | ${transactionData.recipientDetails.account}</span>`;
+      
+      // Update other details
+      document.querySelectorAll('.detail-value')[4].innerHTML = `${transactionData.id} <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">`;
+      document.querySelectorAll('.detail-value')[6].textContent = transactionData.transactionDate;
+      document.querySelectorAll('.detail-value')[7].innerHTML = `${transactionData.sessionId} <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">`;
+      
+      // Update timeline
+      document.querySelectorAll('.label-time')[0].textContent = transactionData.timeline.payment;
+      document.querySelectorAll('.label-time')[1].textContent = transactionData.timeline.processing;
+      document.querySelectorAll('.label-time')[2].textContent = transactionData.timeline.received;
+    }
+
+    // Function to update UI based on transaction status
+    function updateUIByStatus() {
+      const statusElement = document.querySelector('.status');
+      const timelineSection = document.querySelector('.timeline').parentElement;
+      const timelineLabels = document.querySelector('.timeline-labels');
+      const moreActionsSection = document.getElementById('legSection');
+      const actionButtons = document.querySelector('.action-buttons');
+      const disputeButton = document.querySelector('.dispute-button');
+      const bubbleSection = document.querySelector('.wrap');
+      const timelineDots = document.querySelectorAll('.timeline-dot');
+      const timelineLines = document.querySelectorAll('.timeline-line');
+      
+      // Reset classes
+      statusElement.className = 'status';
+      
+      if (transactionData.status === 'success') {
+        // Success state
+        statusElement.classList.add('status-success');
+        statusElement.textContent = 'Successful';
+        
+        // Update timeline images to all ticks
+        timelineDots[0].src = 'images/history/tick.png';
+        timelineDots[1].src = 'images/history/tick.png';
+        timelineDots[2].src = 'images/history/tick.png';
+        
+        // Update timeline lines to green
+        timelineLines[0].className = 'timeline-line timeline-line-success';
+        timelineLines[1].className = 'timeline-line timeline-line-success';
+        
+        // Show all elements
+        timelineSection.classList.remove('hidden');
+        timelineLabels.classList.remove('hidden');
+        moreActionsSection.classList.remove('hidden');
+        actionButtons.classList.remove('hidden');
+        disputeButton.classList.add('hidden');
+        bubbleSection.classList.remove('hidden');
+        
+      } else if (transactionData.status === 'failed') {
+        // Failed state
+        statusElement.classList.add('status-failed');
+        statusElement.textContent = 'Failed';
+        
+        // Hide timeline, more actions, and footer buttons
+        timelineSection.classList.add('hidden');
+        timelineLabels.classList.add('hidden');
+        moreActionsSection.classList.add('hidden');
+        actionButtons.classList.add('hidden');
+        disputeButton.classList.add('hidden');
+        bubbleSection.classList.add('hidden');
+        
+      } else if (transactionData.status === 'pending') {
+        // Pending state
+        statusElement.classList.add('status-pending');
+        statusElement.textContent = 'Pending';
+        
+        // Update timeline images
+        timelineDots[0].src = 'images/history/tick.png';
+        timelineDots[1].src = 'images/history/delay.png';
+        timelineDots[2].src = 'images/history/untick.png';
+        
+        // Update timeline line colors
+        timelineLines[0].className = 'timeline-line timeline-line-success';
+        timelineLines[1].className = 'timeline-line timeline-line-pending';
+        
+        // Show timeline and labels
+        timelineSection.classList.remove('hidden');
+        timelineLabels.classList.remove('hidden');
+        
+        // Hide more actions, show only dispute button
+        moreActionsSection.classList.add('hidden');
+        actionButtons.classList.add('hidden');
+        disputeButton.classList.remove('hidden');
+        bubbleSection.classList.remove('hidden');
+      }
+    }
+
+    // Function to change status
+    function changeStatus(newStatus) {
+      transactionData.status = newStatus;
+      updateReceiptDetails();
+      updateUIByStatus();
+    }
+
+    // Function to update all UI elements
+    function updateAllUI() {
+      updateReceiptDetails();
+      updateUIByStatus();
+    }
+
+    // Load transaction details when page loads
+    document.addEventListener('DOMContentLoaded', updateAllUI);
+
+    // Placeholder functions for actions
+    function transferBack() {
+      alert('Transfer back functionality would be implemented here.');
+    }
+
+    function viewRecords() {
+      alert('View records functionality would be implemented here.');
+    }
+
+ </script>
+</body>
+</html>
