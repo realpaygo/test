@@ -240,7 +240,9 @@
       };
   // Save to history
   let history = JSON.parse(localStorage.getItem('historyList') || '[]');
-  data.date = new Date().toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      if (!data.date) {
+        data.date = new Date().toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      }
   history.push(data);
   localStorage.setItem('historyList', JSON.stringify(history));
   localStorage.setItem('receiptData', JSON.stringify(data));

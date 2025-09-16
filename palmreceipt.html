@@ -376,9 +376,8 @@
           document.getElementById('amount3').textContent = '₦' + formattedAmount;
         }
         // Set completion time to current time
-        var now = new Date();
-        var dateStr = now.toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        document.getElementById('date').textContent = dateStr;
+  var dateStr = data.date || '';
+  document.getElementById('date').textContent = dateStr;
         // Set session ID
         if (data.sessionId) {
           document.getElementById('SID1').textContent = data.sessionId;

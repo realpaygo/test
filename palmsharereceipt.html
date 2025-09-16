@@ -355,10 +355,9 @@ body {
           var formattedAmount = Number(data.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
           document.getElementById('receiptAmount').textContent = '₦' + formattedAmount;
         }
-        // Completion time
-        var now = new Date();
-        var dateStr = now.toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        document.getElementById('receiptDate').textContent = dateStr;
+  // Completion time
+  var dateStr = data.date || '';
+  document.getElementById('receiptDate').textContent = dateStr;
         // Session ID
         if (data.sessionId) {
           document.getElementById('sessionId1').textContent = data.sessionId;
@@ -371,21 +370,48 @@ body {
     // Share as Image functionality
     document.getElementById('shareAsImageBtn').onclick = function() {
       var receipt = document.querySelector('.receipt');
-      html2canvas(receipt).then(function(canvas) {
-        var link = document.createElement('a');
-        link.download = 'receipt.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+      html2canvas(receipt, {backgroundColor: '#000'}).then(function(canvas) {
+        // Add curved outline overlay
+        var overlay = new Image();
+        overlay.src = 'images/outline.png'; // You must provide this PNG in your images folder
+        overlay.onload = function() {
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+          var link = document.createElement('a');
+          link.download = 'receipt.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        };
+        overlay.onerror = function() {
+          // fallback if overlay not found
+          var link = document.createElement('a');
+          link.download = 'receipt.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        };
       });
     };
     // Save as PDF functionality
     document.getElementById('saveAsPdfBtn').onclick = function() {
       var receipt = document.querySelector('.receipt');
-      html2canvas(receipt).then(function(canvas) {
-        var imgData = canvas.toDataURL('image/png');
-        var pdf = new window.jspdf.jsPDF({orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height]});
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save('receipt.pdf');
+      html2canvas(receipt, {backgroundColor: '#000'}).then(function(canvas) {
+        // Add curved outline overlay
+        var overlay = new Image();
+        overlay.src = 'images/outline.png'; // You must provide this PNG in your images folder
+        overlay.onload = function() {
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+          var imgData = canvas.toDataURL('image/png');
+          var pdf = new window.jspdf.jsPDF({orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height]});
+          pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+          pdf.save('receipt.pdf');
+        };
+        overlay.onerror = function() {
+          var imgData = canvas.toDataURL('image/png');
+          var pdf = new window.jspdf.jsPDF({orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height]});
+          pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+          pdf.save('receipt.pdf');
+        };
       });
     };
   });
