@@ -148,7 +148,11 @@
   <div class="top-buttons">
     <button onclick="menuClicked()"><i class="fa-solid fa-bars"></i> Menu</button>
     <button onclick="historyClicked()"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+    <button onclick="settingsClicked()"><i class="fa-solid fa-gear"></i> Settings</button>
   </div>
+    function settingsClicked() {
+      Swal.fire('Settings', 'Settings page coming soon!', 'info');
+    }
 
   <div class="container">
     <h2>Available Services</h2>
@@ -231,16 +235,7 @@
     }
 
     function showDeveloper() {
-      Swal.fire({
-        icon: 'info',
-        title: '👨‍💻 Developer',
-        html: `
-          <p>Developed by <b>Cyber Space</b></p>
-          <p>Contact via WhatsApp:</p>
-          <a href="https://wa.me/2349020388011" target="_blank" style="color:#1a73e8; font-weight:bold;">Chat on WhatsApp</a>
-        `,
-        confirmButtonColor: '#1a73e8'
-      });
+      window.location.href = 'developer.html';
     }
 
     function historyClicked() {
