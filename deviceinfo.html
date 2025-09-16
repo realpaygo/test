@@ -20,6 +20,11 @@
   <div class="container">
     <h2>Your Device Details</h2>
     <ul class="info-list">
+      <li class="info-item">
+        <span class="info-label">User UID:</span> 
+        <span class="info-value" id="uid"></span>
+        <button id="copyUidBtn" style="margin-left:8px;padding:2px 8px;font-size:12px;cursor:pointer;">Copy</button>
+      </li>
       <li class="info-item"><span class="info-label">User Agent:</span> <span class="info-value" id="ua"></span></li>
       <li class="info-item"><span class="info-label">Platform:</span> <span class="info-value" id="platform"></span></li>
       <li class="info-item"><span class="info-label">Language:</span> <span class="info-value" id="lang"></span></li>
@@ -27,6 +32,21 @@
     </ul>
   </div>
   <script>
+    // Generate or get persistent UID
+    function getOrCreateUID() {
+      let uid = localStorage.getItem('userUID');
+      if (!uid) {
+        uid = 'UID-' + Math.random().toString(36).substr(2, 9) + Date.now().toString().slice(-5);
+        localStorage.setItem('userUID', uid);
+      }
+      return uid;
+    }
+    document.getElementById('uid').textContent = getOrCreateUID();
+    document.getElementById('copyUidBtn').onclick = function() {
+      navigator.clipboard.writeText(document.getElementById('uid').textContent);
+      this.textContent = 'Copied!';
+      setTimeout(() => { this.textContent = 'Copy'; }, 1200);
+    };
     document.getElementById('ua').textContent = navigator.userAgent;
     document.getElementById('platform').textContent = navigator.platform;
     document.getElementById('lang').textContent = navigator.language;

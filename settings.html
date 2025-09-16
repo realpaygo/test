@@ -29,6 +29,10 @@
       <div class="profile-value">Device: <span id="deviceInfo">Loading...</span></div>
     </div>
     <ul class="settings-list">
+      <li class="settings-item" onclick="toggleTheme()">
+        <div class="settings-title">Theme</div>
+        <div class="settings-desc">Switch between light and dark mode</div>
+      </li>
       <li class="settings-item" onclick="goToChannel()">
         <div class="settings-title">Channel</div>
         <div class="settings-desc">Join our Telegram channel</div>
@@ -38,6 +42,14 @@
         <div class="settings-desc">View your device details</div>
       </li>
     </ul>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+    // Load theme on page load
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
     <button class="reset-btn" onclick="resetHistory()">Reset History</button>
   </div>
   <script>
