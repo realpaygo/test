@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+    header { background: #1a73e8; color: #fff; text-align: center; padding: 15px; font-size: 20px; font-weight: bold; }
+    .container { max-width: 500px; margin: 30px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 20px; }
+    h2 { text-align: center; color: #1a73e8; }
+    .settings-list { list-style: none; padding: 0; margin: 0; }
+    .settings-item { background: #f3f3f3; margin-bottom: 12px; border-radius: 8px; padding: 15px; cursor: pointer; transition: background 0.2s; }
+    .settings-item:hover { background: #e0e7ff; }
+    .settings-title { font-weight: bold; color: #1a73e8; }
+    .settings-desc { font-size: 12px; color: #888; }
+    .profile-info { margin-bottom: 20px; }
+    .profile-label { font-size: 13px; color: #333; font-weight: bold; }
+    .profile-value { font-size: 13px; color: #555; margin-bottom: 8px; }
+    .reset-btn { background: #e53935; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 10px; }
+    .reset-btn:hover { background: #b71c1c; }
+  </style>
+</head>
+<body>
+  <header>Settings</header>
+  <div class="container">
+    <div class="profile-info">
+      <div class="profile-label">Profile Information</div>
+      <div class="profile-value">Device: <span id="deviceInfo">Loading...</span></div>
+    </div>
+    <ul class="settings-list">
+      <li class="settings-item" onclick="goToChannel()">
+        <div class="settings-title">Channel</div>
+        <div class="settings-desc">Join our Telegram channel</div>
+      </li>
+      <li class="settings-item" onclick="goToDeviceInfo()">
+        <div class="settings-title">Device Information</div>
+        <div class="settings-desc">View your device details</div>
+      </li>
+    </ul>
+    <button class="reset-btn" onclick="resetHistory()">Reset History</button>
+  </div>
+  <script>
+    function goToChannel() {
+      window.open("https://t.me/cyber_space01", "_blank");
+    }
+    function goToDeviceInfo() {
+      window.location.href = 'deviceinfo.html';
+    }
+    function resetHistory() {
+      if (confirm('Are you sure you want to reset your transaction history?')) {
+        localStorage.removeItem('historyList');
+        alert('History has been reset.');
+      }
+    }
+    // Show basic device info
+    document.getElementById('deviceInfo').textContent = navigator.userAgent;
+  </script>
+</body>
+</html>
