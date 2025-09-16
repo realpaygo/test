@@ -369,9 +369,11 @@
           document.getElementById('bank').textContent = data.beneficiaryBank + ' | ' + data.beneficiaryAcctNo;
         }
         if (data.amount) {
-          document.getElementById('amount').textContent = '₦' + Number(data.amount).toLocaleString();
-          document.getElementById('amount2').textContent = '₦' + Number(data.amount).toLocaleString();
-          document.getElementById('amount3').textContent = '₦' + Number(data.amount).toLocaleString();
+          // Always show two decimal places for the amount
+          var formattedAmount = Number(data.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          document.getElementById('amount').textContent = '₦' + formattedAmount;
+          document.getElementById('amount2').textContent = '₦' + formattedAmount;
+          document.getElementById('amount3').textContent = '₦' + formattedAmount;
         }
         // Set completion time to current time
         var now = new Date();
