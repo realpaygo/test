@@ -1,3 +1,4 @@
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -186,8 +187,23 @@
   </a>
 
   <script>
+
+    // Helper for delayed navigation with loading
+    function delayedNavigate(url) {
+      Swal.fire({
+        title: 'Loading... Please wait',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+      });
+      setTimeout(() => { window.location.href = url; }, 3000);
+    }
+
     function goToReceipt() {
-      window.location.href = "selectbank.html";
+      delayedNavigate("selectbank.html");
+    }
+
+    function settingsClicked() {
+      delayedNavigate('settings.html');
     }
 
     function comingSoon(service) {
@@ -204,13 +220,13 @@
         title: '📌 Menu',
         html: `
           <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
-            <button onclick="goHome()" style="padding:10px; border:none; border-radius:6px; background:#1a73e8; color:#fff; cursor:pointer; font-size:15px;">
+            <button onclick="delayedNavigate('index.html')" style="padding:10px; border:none; border-radius:6px; background:#1a73e8; color:#fff; cursor:pointer; font-size:15px;">
               🏠 Home
             </button>
-            <button onclick="goToChannel()" style="padding:10px; border:none; border-radius:6px; background:#0088cc; color:#fff; cursor:pointer; font-size:15px;">
+            <button onclick="window.open('https://t.me/cyber_space01', '_blank')" style="padding:10px; border:none; border-radius:6px; background:#0088cc; color:#fff; cursor:pointer; font-size:15px;">
               📢 Channel
             </button>
-            <button onclick="showDeveloper()" style="padding:10px; border:none; border-radius:6px; background:#4caf50; color:#fff; cursor:pointer; font-size:15px;">
+            <button onclick="delayedNavigate('developer.html')" style="padding:10px; border:none; border-radius:6px; background:#4caf50; color:#fff; cursor:pointer; font-size:15px;">
               👨‍💻 Developer
             </button>
           </div>
@@ -223,7 +239,7 @@
     }
 
     function goHome() {
-      window.location.href = "index.html"; 
+      delayedNavigate("index.html");
     }
 
     function goToChannel() {
@@ -231,11 +247,11 @@
     }
 
     function showDeveloper() {
-      window.location.href = 'developer.html';
+      delayedNavigate('developer.html');
     }
 
     function historyClicked() {
-      window.location.href = "history.html";
+      delayedNavigate("history.html");
     }
 
     function toggleTheme() {

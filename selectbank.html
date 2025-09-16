@@ -82,7 +82,7 @@
   <header style="display:flex;align-items:center;justify-content:space-between;background:var(--primary);color:#fff;padding:15px;font-size:20px;font-weight:bold;">
     <img src="images/back.png" alt="back" id="backArrow" style="height:24px;cursor:pointer;">
     <span style="flex:1;text-align:center;">Select Bank Receipt</span>
-    <button class="theme-toggle" onclick="toggleTheme()" style="background:var(--primary);border:none;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px;"><i class="fa-solid fa-moon"></i></button>
+    <button class="theme-toggle" id="themeToggle" style="background:var(--primary);border:none;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px;"><i class="fa-solid fa-moon"></i></button>
   </header>
 
   <div class="container">
@@ -128,21 +128,34 @@
   </div>
 
   <script>
+    // Theme persistence and toggle
+    const themeBtn = document.getElementById('themeToggle');
+    function setThemeFromStorage() {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        if(themeBtn) themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      } else {
+        document.body.classList.remove('dark');
+        if(themeBtn) themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      }
+    }
+    setThemeFromStorage();
+    if(themeBtn) themeBtn.onclick = function() {
+      document.body.classList.toggle('dark');
+      if(document.body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      }
+    };
     function goToReceipt(page) {
       window.location.href = page;
     }
     document.getElementById('backArrow').onclick = function() {
-      window.history.back();
+      window.location.href = 'index.html';
     };
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-      const btn = document.querySelector(".theme-toggle i");
-      if (document.body.classList.contains("dark")) {
-        btn.classList.replace("fa-moon", "fa-sun");
-      } else {
-        btn.classList.replace("fa-sun", "fa-moon");
-      }
-    }
   </script>
 
 </body>

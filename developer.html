@@ -120,11 +120,9 @@
 </head>
 <body>
 
-  <header>
-    Developer — Max Tech
-    <button class="theme-toggle" id="themeToggle">
-      <i class="fa-solid fa-moon"></i> Dark
-    </button>
+  <header style="display:flex;align-items:center;gap:12px;position:relative;">
+    <img src="images/back.png" alt="back" id="backArrow" style="height:24px;cursor:pointer;">
+    <span style="flex:1;">Developer — Max Tech</span>
   </header>
 
   <div class="container">
@@ -172,22 +170,10 @@
       path: 'https://assets2.lottiefiles.com/packages/lf20_qp1q7mct.json'
     });
 
-    // Theme Toggle with Persistence
-    const toggleBtn = document.getElementById('themeToggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark');
-      toggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i> Light';
-    }
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      if (document.body.classList.contains('dark')) {
-        toggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i> Light';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        toggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i> Dark';
-        localStorage.setItem('theme', 'light');
-      }
-    });
+    // Back arrow to dashboard
+    document.getElementById('backArrow').onclick = function() {
+      window.location.href = 'index.html';
+    };
   </script>
 
 </body>
