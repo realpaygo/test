@@ -426,7 +426,7 @@
       <div class="card" style="margin-top: 20px;">
         <div class="profile-image"><img src="images/history/logo.png" alt=""></div>
         <div class="amount-section">
-          <div class="transfer-text">Transfer to POS Transfer - ABDULKADIR YUSUF</div>
+          <div class="transfer-text">Transfer to Max Tech</div>
           <div class="amount">₦2,000.00</div>
           <div class="status status-success">Successful</div>
         </div>
@@ -468,7 +468,7 @@
 
         <div class="detail-row">
           <div class="detail-label">Amount</div>
-          <div class="detail-value">₦3,000.00</div>
+          <div class="detail-value">₦2,000.00</div>
         </div>
         <div class="detail-row">
           <div class="detail-label">Fee</div>
@@ -476,7 +476,7 @@
         </div>
         <div class="detail-row">
           <div class="detail-label">Amount Paid</div>
-          <div class="detail-value">₦2,010.00</div>
+          <div class="detail-value">₦2,000.00</div>
         </div>
       </div>
 
@@ -547,153 +547,66 @@
   </div>
 
   <script>
-    // Sample transaction data (in a real app, this would come from an API)
-    let transactionData = {
-      id: "250225010100418357292729",
-      amount: 2000.00,
-      fee: 10.00,
-      amountPaid: 2010.00,
-      recipientName: "ABDULKADIR YUSUF",
-      recipientDetails: {
-        name: "WEB TECH",
-        bank: "United Bank For Africa",
-        account: "915****780"
-      },
-      transactionDate: "Feb 25th, 2025 08:19:56",
-      sessionId: "100004250223182413127782423243",
-      status: "success", // "success", "failed", or "pending"
-      timeline: {
-        payment: "02-23 07:09:56",
-        processing: "02-23 07:09:56",
-        received: "02-23 07:09:56"
+    // Dynamically update Opay receipt with user data from localStorage (robust version)
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        var data = JSON.parse(localStorage.getItem('receiptData') || '{}');
+        // Update ALL transfer-to text elements (in case there are multiple)
+        var transferTexts = document.querySelectorAll('.transfer-text');
+        var transferTextValue = data.beneficiaryName ? 'Transfer to ' + data.beneficiaryName : 'Transfer to Beneficiary';
+        transferTexts.forEach(function(el) { el.textContent = transferTextValue; });
+
+        // Update amount (main)
+        var amountElem = document.querySelector('.amount');
+        var formattedAmount = data.amount ? '₦' + Number(data.amount).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '₦0.00';
+        if (amountElem) {
+          amountElem.textContent = formattedAmount;
+        }
+
+        // Update Amount row in first card
+        var firstCard = document.querySelectorAll('.card')[0];
+        if (firstCard) {
+          var amountRow = firstCard.querySelectorAll('.detail-value')[0];
+          if (amountRow) {
+            amountRow.textContent = formattedAmount;
+          }
+          // Amount Paid row (third row)
+          var paidRow = firstCard.querySelectorAll('.detail-value')[2];
+          if (paidRow) {
+            paidRow.textContent = formattedAmount;
+          }
+        }
+
+        // Update Transaction Details card
+        var detailsCard = document.querySelectorAll('.card')[1];
+        if (detailsCard) {
+          var details = detailsCard.querySelectorAll('.detail-value');
+          // Recipient Details
+          if (details[0]) {
+            if (data.beneficiaryName && data.beneficiaryBank && data.beneficiaryAcctNo) {
+              details[0].innerHTML = data.beneficiaryName + '<br><span style="font-size:12px; color:#616161;">' + data.beneficiaryBank + ' | ' + data.beneficiaryAcctNo + '</span>';
+            } else {
+              details[0].innerHTML = 'Beneficiary<br><span style="font-size:12px; color:#616161;">Bank | Account</span>';
+            }
+          }
+          // Transaction No. (use sessionId)
+          if (details[1] && data.sessionId) {
+            details[1].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+          }
+          // Payment Method (leave as Wallet)
+          // Transaction Date
+          if (details[3] && data.date) {
+            details[3].textContent = data.date;
+          }
+          // Session ID (use sessionId)
+          if (details[4] && data.sessionId) {
+            details[4].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+          }
+        }
+      } catch (e) {
+        // fallback: leave blank or log error
+        // console.error('Failed to update Opay receipt:', e);
       }
-    };
-
-    // Function to update all receipt details
-    function updateReceiptDetails() {
-      // Update transaction details
-      document.querySelector('.amount').textContent = `₦${transactionData.amount.toLocaleString()}`;
-      document.querySelector('.transfer-text').textContent = `Transfer to POS Transfer - ${transactionData.recipientName}`;
-      document.querySelectorAll('.detail-value')[0].textContent = `₦${(transactionData.amount + 1000).toLocaleString()}`;
-      document.querySelectorAll('.detail-value')[1].innerHTML = `<span style="color: #D3D3D3 ; text-decoration: line-through; margin-right: 3px;">₦${transactionData.fee.toLocaleString()}</span>₦${transactionData.fee.toLocaleString()}`;
-      document.querySelectorAll('.detail-value')[2].textContent = `₦${transactionData.amountPaid.toLocaleString()}`;
-      
-      // Update recipient details
-      const recipientElement = document.querySelectorAll('.detail-value')[3];
-      recipientElement.innerHTML = `${transactionData.recipientDetails.name}<br><span style="font-size:12px; color:#616161;">${transactionData.recipientDetails.bank} | ${transactionData.recipientDetails.account}</span>`;
-      
-      // Update other details
-      document.querySelectorAll('.detail-value')[4].innerHTML = `${transactionData.id} <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">`;
-      document.querySelectorAll('.detail-value')[6].textContent = transactionData.transactionDate;
-      document.querySelectorAll('.detail-value')[7].innerHTML = `${transactionData.sessionId} <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">`;
-      
-      // Update timeline
-      document.querySelectorAll('.label-time')[0].textContent = transactionData.timeline.payment;
-      document.querySelectorAll('.label-time')[1].textContent = transactionData.timeline.processing;
-      document.querySelectorAll('.label-time')[2].textContent = transactionData.timeline.received;
-    }
-
-    // Function to update UI based on transaction status
-    function updateUIByStatus() {
-      const statusElement = document.querySelector('.status');
-      const timelineSection = document.querySelector('.timeline').parentElement;
-      const timelineLabels = document.querySelector('.timeline-labels');
-      const moreActionsSection = document.getElementById('legSection');
-      const actionButtons = document.querySelector('.action-buttons');
-      const disputeButton = document.querySelector('.dispute-button');
-      const bubbleSection = document.querySelector('.wrap');
-      const timelineDots = document.querySelectorAll('.timeline-dot');
-      const timelineLines = document.querySelectorAll('.timeline-line');
-      
-      // Reset classes
-      statusElement.className = 'status';
-      
-      if (transactionData.status === 'success') {
-        // Success state
-        statusElement.classList.add('status-success');
-        statusElement.textContent = 'Successful';
-        
-        // Update timeline images to all ticks
-        timelineDots[0].src = 'images/history/tick.png';
-        timelineDots[1].src = 'images/history/tick.png';
-        timelineDots[2].src = 'images/history/tick.png';
-        
-        // Update timeline lines to green
-        timelineLines[0].className = 'timeline-line timeline-line-success';
-        timelineLines[1].className = 'timeline-line timeline-line-success';
-        
-        // Show all elements
-        timelineSection.classList.remove('hidden');
-        timelineLabels.classList.remove('hidden');
-        moreActionsSection.classList.remove('hidden');
-        actionButtons.classList.remove('hidden');
-        disputeButton.classList.add('hidden');
-        bubbleSection.classList.remove('hidden');
-        
-      } else if (transactionData.status === 'failed') {
-        // Failed state
-        statusElement.classList.add('status-failed');
-        statusElement.textContent = 'Failed';
-        
-        // Hide timeline, more actions, and footer buttons
-        timelineSection.classList.add('hidden');
-        timelineLabels.classList.add('hidden');
-        moreActionsSection.classList.add('hidden');
-        actionButtons.classList.add('hidden');
-        disputeButton.classList.add('hidden');
-        bubbleSection.classList.add('hidden');
-        
-      } else if (transactionData.status === 'pending') {
-        // Pending state
-        statusElement.classList.add('status-pending');
-        statusElement.textContent = 'Pending';
-        
-        // Update timeline images
-        timelineDots[0].src = 'images/history/tick.png';
-        timelineDots[1].src = 'images/history/delay.png';
-        timelineDots[2].src = 'images/history/untick.png';
-        
-        // Update timeline line colors
-        timelineLines[0].className = 'timeline-line timeline-line-success';
-        timelineLines[1].className = 'timeline-line timeline-line-pending';
-        
-        // Show timeline and labels
-        timelineSection.classList.remove('hidden');
-        timelineLabels.classList.remove('hidden');
-        
-        // Hide more actions, show only dispute button
-        moreActionsSection.classList.add('hidden');
-        actionButtons.classList.add('hidden');
-        disputeButton.classList.remove('hidden');
-        bubbleSection.classList.remove('hidden');
-      }
-    }
-
-    // Function to change status
-    function changeStatus(newStatus) {
-      transactionData.status = newStatus;
-      updateReceiptDetails();
-      updateUIByStatus();
-    }
-
-    // Function to update all UI elements
-    function updateAllUI() {
-      updateReceiptDetails();
-      updateUIByStatus();
-    }
-
-    // Load transaction details when page loads
-    document.addEventListener('DOMContentLoaded', updateAllUI);
-
-    // Placeholder functions for actions
-    function transferBack() {
-      alert('Transfer back functionality would be implemented here.');
-    }
-
-    function viewRecords() {
-      alert('View records functionality would be implemented here.');
-    }
-
- </script>
+    });
 </body>
 </html>
