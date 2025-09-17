@@ -214,10 +214,24 @@
       setTimeout(() => { window.location.href = 'settings.html'; }, 1500);
     }
     function comingSoon(service) {
-      alert(service + ' is not available yet. Stay tuned!');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Not Available',
+        text: service + ' is not available yet. Stay tuned!',
+        confirmButtonText: 'OK'
+      });
     }
     function menuClicked() {
-      alert('Menu: Home, Channel, Developer');
+      Swal.fire({
+        title: 'Menu',
+        html: `
+          <button onclick="window.location.href='index.html'" style="width:100%;margin:5px 0;padding:8px 0;border:none;background:#1a73e8;color:#fff;border-radius:6px;cursor:pointer;">Home</button><br>
+          <button onclick="window.open('https://t.me/cyber_space01','_blank')" style="width:100%;margin:5px 0;padding:8px 0;border:none;background:#25d366;color:#fff;border-radius:6px;cursor:pointer;">Channel</button><br>
+          <button onclick="window.location.href='developer.html'" style="width:100%;margin:5px 0;padding:8px 0;border:none;background:#333;color:#fff;border-radius:6px;cursor:pointer;">Developer</button>
+        `,
+        showConfirmButton: false,
+        customClass: {popup: 'swal2-menu-popup'}
+      });
     }
     function goHome() {
       setTimeout(() => { window.location.href = "index.html"; }, 1500);

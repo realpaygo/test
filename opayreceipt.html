@@ -545,6 +545,13 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
+    function randomDigits(length) {
+      let s = '';
+      for (let i = 0; i < length; i++) {
+        s += Math.floor(Math.random() * 10);
+      }
+      return s;
+    }
     try {
       var data = JSON.parse(localStorage.getItem('receiptData') || '{}');
       // If no beneficiaryName, show a warning
@@ -562,6 +569,16 @@
         }
         return;
       }
+
+      // Generate 24-digit transaction number and 30-digit session ID if not present
+      if (!data.transactionNo) {
+        data.transactionNo = randomDigits(24);
+      }
+      if (!data.sessionId) {
+        data.sessionId = randomDigits(30);
+      }
+      // Save back to localStorage for consistency
+      localStorage.setItem('receiptData', JSON.stringify(data));
 
       // Update ALL transfer-to text elements
       var transferTextValue = 'Transfer to ' + data.beneficiaryName;
@@ -591,16 +608,16 @@
         if (details[0]) {
           details[0].innerHTML = data.beneficiaryName + '<br><span style="font-size:12px; color:#616161;">' + (data.beneficiaryBank || 'Bank') + ' | ' + (data.beneficiaryAcctNo || 'Account') + '</span>';
         }
-        // Transaction No. (use sessionId)
-        if (details[1] && data.sessionId) {
-          details[1].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+        // Transaction No. (24 digits)
+        if (details[1]) {
+          details[1].innerHTML = data.transactionNo + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
         }
         // Transaction Date
         if (details[3] && data.date) {
           details[3].textContent = data.date;
         }
-        // Session ID (use sessionId)
-        if (details[4] && data.sessionId) {
+        // Session ID (30 digits)
+        if (details[4]) {
           details[4].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
         }
       }
