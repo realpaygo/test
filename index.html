@@ -135,6 +135,16 @@
   </style>
 </head>
 <body>
+  <!-- Loader -->
+  <div id="pageLoader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#fff;z-index:2000;display:flex;align-items:center;justify-content:center;">
+    <img src="images/load.png" id="loaderImg" style="width:60px;height:60px;animation:bounce 0.7s infinite alternate;" alt="Loading...">
+  </div>
+  <style>
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-30px); }
+    }
+  </style>
 
   <header>
     Dashboard
@@ -188,72 +198,39 @@
 
   <script>
 
-    // Helper for delayed navigation with loading
-    function delayedNavigate(url) {
-      Swal.fire({
-        title: 'Loading... Please wait',
-        allowOutsideClick: false,
-        didOpen: () => { Swal.showLoading(); }
-      });
-      setTimeout(() => { window.location.href = url; }, 3000);
-    }
+    // Loader logic
+    document.addEventListener('DOMContentLoaded', function() {
+      var loader = document.getElementById('pageLoader');
+      setTimeout(function() {
+        if(loader) loader.style.display = 'none';
+      }, 1500);
+    });
 
+    // Navigation helpers (no SweetAlert)
     function goToReceipt() {
-      delayedNavigate("selectbank.html");
+      setTimeout(() => { window.location.href = "selectbank.html"; }, 1500);
     }
-
     function settingsClicked() {
-      delayedNavigate('settings.html');
+      setTimeout(() => { window.location.href = 'settings.html'; }, 1500);
     }
-
     function comingSoon(service) {
-      Swal.fire({
-        icon: 'info',
-        title: 'Coming Soon',
-        text: service + ' is not available yet. Stay tuned!',
-        confirmButtonColor: '#1a73e8'
-      });
+      alert(service + ' is not available yet. Stay tuned!');
     }
-
     function menuClicked() {
-      Swal.fire({
-        title: '📌 Menu',
-        html: `
-          <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
-            <button onclick="delayedNavigate('index.html')" style="padding:10px; border:none; border-radius:6px; background:#1a73e8; color:#fff; cursor:pointer; font-size:15px;">
-              🏠 Home
-            </button>
-            <button onclick="window.open('https://t.me/cyber_space01', '_blank')" style="padding:10px; border:none; border-radius:6px; background:#0088cc; color:#fff; cursor:pointer; font-size:15px;">
-              📢 Channel
-            </button>
-            <button onclick="delayedNavigate('developer.html')" style="padding:10px; border:none; border-radius:6px; background:#4caf50; color:#fff; cursor:pointer; font-size:15px;">
-              👨‍💻 Developer
-            </button>
-          </div>
-        `,
-        showConfirmButton: false,
-        showCloseButton: true,
-        focusConfirm: false,
-        width: 300
-      });
+      alert('Menu: Home, Channel, Developer');
     }
-
     function goHome() {
-      delayedNavigate("index.html");
+      setTimeout(() => { window.location.href = "index.html"; }, 1500);
     }
-
     function goToChannel() {
       window.open("https://t.me/cyber_space01", "_blank");
     }
-
     function showDeveloper() {
-      delayedNavigate('developer.html');
+      setTimeout(() => { window.location.href = 'developer.html'; }, 1500);
     }
-
     function historyClicked() {
-      delayedNavigate("history.html");
+      setTimeout(() => { window.location.href = "history.html"; }, 1500);
     }
-
     function toggleTheme() {
       document.body.classList.toggle("dark");
       const btn = document.querySelector(".theme-toggle i");

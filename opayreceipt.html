@@ -426,7 +426,7 @@
       <div class="card" style="margin-top: 20px;">
         <div class="profile-image"><img src="images/history/logo.png" alt=""></div>
         <div class="amount-section">
-          <div class="transfer-text">Transfer to Max Tech</div>
+          <div class="transfer-text"></div>
           <div class="amount">₦2,000.00</div>
           <div class="status status-success">Successful</div>
         </div>
@@ -484,10 +484,7 @@
         <div class="section-title">Transaction Details</div>
         <div class="detail-row">
           <div class="detail-label">Recipient Details</div>
-          <div class="detail-value" style="line-height:1.4; text-align:right;">
-            WEB TECH<br>
-            <span style="font-size:12px; color:#616161;">United Bank For Africa | 915****789</span>
-          </div>
+          <div class="detail-value" style="line-height:1.4; text-align:right;"></div>
         </div>
 
         <div class="detail-row">
@@ -547,66 +544,72 @@
   </div>
 
   <script>
-    // Dynamically update Opay receipt with user data from localStorage (robust version)
-    document.addEventListener('DOMContentLoaded', function() {
-      try {
-        var data = JSON.parse(localStorage.getItem('receiptData') || '{}');
-        // Update ALL transfer-to text elements (in case there are multiple)
-        var transferTexts = document.querySelectorAll('.transfer-text');
-        var transferTextValue = data.beneficiaryName ? 'Transfer to ' + data.beneficiaryName : 'Transfer to Beneficiary';
-        transferTexts.forEach(function(el) { el.textContent = transferTextValue; });
-
-        // Update amount (main)
-        var amountElem = document.querySelector('.amount');
-        var formattedAmount = data.amount ? '₦' + Number(data.amount).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '₦0.00';
-        if (amountElem) {
-          amountElem.textContent = formattedAmount;
-        }
-
-        // Update Amount row in first card
-        var firstCard = document.querySelectorAll('.card')[0];
-        if (firstCard) {
-          var amountRow = firstCard.querySelectorAll('.detail-value')[0];
-          if (amountRow) {
-            amountRow.textContent = formattedAmount;
-          }
-          // Amount Paid row (third row)
-          var paidRow = firstCard.querySelectorAll('.detail-value')[2];
-          if (paidRow) {
-            paidRow.textContent = formattedAmount;
-          }
-        }
-
-        // Update Transaction Details card
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      var data = JSON.parse(localStorage.getItem('receiptData') || '{}');
+      // If no beneficiaryName, show a warning
+      if (!data.beneficiaryName) {
+        document.querySelectorAll('.transfer-text').forEach(function(el) {
+          el.textContent = 'Transfer to [No Name - Please use the form]';
+        });
+        // Also update recipient details
         var detailsCard = document.querySelectorAll('.card')[1];
         if (detailsCard) {
           var details = detailsCard.querySelectorAll('.detail-value');
-          // Recipient Details
           if (details[0]) {
-            if (data.beneficiaryName && data.beneficiaryBank && data.beneficiaryAcctNo) {
-              details[0].innerHTML = data.beneficiaryName + '<br><span style="font-size:12px; color:#616161;">' + data.beneficiaryBank + ' | ' + data.beneficiaryAcctNo + '</span>';
-            } else {
-              details[0].innerHTML = 'Beneficiary<br><span style="font-size:12px; color:#616161;">Bank | Account</span>';
-            }
-          }
-          // Transaction No. (use sessionId)
-          if (details[1] && data.sessionId) {
-            details[1].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
-          }
-          // Payment Method (leave as Wallet)
-          // Transaction Date
-          if (details[3] && data.date) {
-            details[3].textContent = data.date;
-          }
-          // Session ID (use sessionId)
-          if (details[4] && data.sessionId) {
-            details[4].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+            details[0].innerHTML = '[No Name]<br><span style="font-size:12px; color:#616161;">Bank | Account</span>';
           }
         }
-      } catch (e) {
-        // fallback: leave blank or log error
-        // console.error('Failed to update Opay receipt:', e);
+        return;
       }
-    });
+
+      // Update ALL transfer-to text elements
+      var transferTextValue = 'Transfer to ' + data.beneficiaryName;
+      document.querySelectorAll('.transfer-text').forEach(function(el) {
+        el.textContent = transferTextValue;
+      });
+
+      // Update amount (main)
+      var formattedAmount = data.amount ? '₦' + Number(data.amount).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '₦0.00';
+      var amountElem = document.querySelector('.amount');
+      if (amountElem) amountElem.textContent = formattedAmount;
+
+      // Update Amount row in first card
+      var firstCard = document.querySelectorAll('.card')[0];
+      if (firstCard) {
+        var amountRow = firstCard.querySelectorAll('.detail-value')[0];
+        if (amountRow) amountRow.textContent = formattedAmount;
+        var paidRow = firstCard.querySelectorAll('.detail-value')[2];
+        if (paidRow) paidRow.textContent = formattedAmount;
+      }
+
+      // Update Transaction Details card
+      var detailsCard = document.querySelectorAll('.card')[1];
+      if (detailsCard) {
+        var details = detailsCard.querySelectorAll('.detail-value');
+        // Recipient Details
+        if (details[0]) {
+          details[0].innerHTML = data.beneficiaryName + '<br><span style="font-size:12px; color:#616161;">' + (data.beneficiaryBank || 'Bank') + ' | ' + (data.beneficiaryAcctNo || 'Account') + '</span>';
+        }
+        // Transaction No. (use sessionId)
+        if (details[1] && data.sessionId) {
+          details[1].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+        }
+        // Transaction Date
+        if (details[3] && data.date) {
+          details[3].textContent = data.date;
+        }
+        // Session ID (use sessionId)
+        if (details[4] && data.sessionId) {
+          details[4].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
+        }
+      }
+    } catch (e) {
+      document.querySelectorAll('.transfer-text').forEach(function(el) {
+        el.textContent = 'Transfer to [Error loading data]';
+      });
+    }
+  });
+</script>
 </body>
 </html>
