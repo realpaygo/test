@@ -27,12 +27,16 @@
       <label>Narration</label>
       <input type="text" name="narration">
     </div>
-    <button type="submit">Transfer</button>
+    <button id="transferBtn" type="button">Transfer</button>
   </form>
   <script>
-    document.getElementById('transferForm').onsubmit = function(e) {
-      e.preventDefault();
-      window.location.href = 'moniepoint.html';
+    document.getElementById('transferBtn').onclick = function() {
+      var form = document.getElementById('transferForm');
+      if (form.checkValidity()) {
+        window.location.href = 'moniepoint.html';
+      } else {
+        form.reportValidity();
+      }
     };
   </script>
 </body>
