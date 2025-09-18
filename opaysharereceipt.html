@@ -55,12 +55,9 @@
       padding: 4px;
       height: 490px;
       background-repeat: no-repeat;
-      border: 2.5px dotted #00B876;
-      border-radius: 28px;
-      box-sizing: border-box;
-      position: relative;
     }
     .inner-card {
+       
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -69,8 +66,6 @@
       background-repeat: no-repeat;
       height: 400px;
       margin-top: 20px;
-      border-radius: 22px;
-      overflow: hidden;
     }
 
     /* ===== Receipt Title ===== */
@@ -320,17 +315,13 @@
     // Share as Image functionality
     document.getElementById('shareAsImageBtn').onclick = function() {
       var receipt = document.querySelector('.receipt-card');
-      // Temporarily add a white background for export
-      var prevBg = receipt.style.backgroundColor;
-      receipt.style.backgroundColor = '#fff';
       html2canvas(receipt, {
-        backgroundColor: '#fff',
+        backgroundColor: null,
         useCORS: true,
         allowTaint: true,
         logging: false,
         scale: 2
       }).then(function(canvas) {
-        receipt.style.backgroundColor = prevBg;
         var link = document.createElement('a');
         link.download = 'opay-receipt.png';
         link.href = canvas.toDataURL('image/png');
@@ -342,34 +333,17 @@
     // Save as PDF functionality
     document.getElementById('saveAsPdfBtn').onclick = function() {
       var receipt = document.querySelector('.receipt-card');
-      // Temporarily add a white background for export
-      var prevBg = receipt.style.backgroundColor;
-      receipt.style.backgroundColor = '#fff';
       html2canvas(receipt, {
-        backgroundColor: '#fff',
+        backgroundColor: null,
         useCORS: true,
         allowTaint: true,
         logging: false,
         scale: 2
       }).then(function(canvas) {
-        receipt.style.backgroundColor = prevBg;
         var imgData = canvas.toDataURL('image/png');
         var pdf = new window.jspdf.jsPDF({orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height]});
         pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
         pdf.save('opay-receipt.pdf');
-        // Try to share the PDF if supported
-        if (navigator.canShare && window.Blob) {
-          pdf.output('blob').then(function(blob) {
-            var file = new File([blob], 'opay-receipt.pdf', {type: 'application/pdf'});
-            if (navigator.canShare({ files: [file] })) {
-              navigator.share({
-                files: [file],
-                title: 'OPay Receipt',
-                text: 'Here is your OPay transaction receipt.'
-              });
-            }
-          });
-        }
       });
     };
   </script>
