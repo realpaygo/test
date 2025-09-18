@@ -237,11 +237,16 @@
         alert('Account numbers must be exactly 10 digits.');
         return;
       }
-      // Generate random session ID
-      function randomSessionId() {
-        return Math.floor(Math.random() * 1e15).toString().padStart(15, '0');
+      // Generate 24-digit transaction number and 30-digit session ID
+      function randomDigits(length) {
+        let s = '';
+        for (let i = 0; i < length; i++) {
+          s += Math.floor(Math.random() * 10);
+        }
+        return s;
       }
-      const sessionId = randomSessionId();
+      const transactionNo = randomDigits(24);
+      const sessionId = randomDigits(30);
       const data = {
         senderName: form.senderName.value,
         senderAcctNo: form.senderAcctNo.value,
@@ -251,6 +256,7 @@
         beneficiaryBank: form.beneficiaryBank.value,
         amount: form.amount.value,
         narration: form.narration.value,
+        transactionNo: transactionNo,
         sessionId: sessionId,
         type: 'opay'
       };

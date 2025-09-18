@@ -238,11 +238,16 @@
         alert('Account numbers must be exactly 10 digits.');
         return;
       }
-      // Generate random session ID
-      function randomSessionId() {
-        return Math.floor(Math.random() * 1e15).toString().padStart(15, '0');
+      // Generate 24-digit transaction number and 30-digit session ID
+      function randomDigits(length) {
+        let s = '';
+        for (let i = 0; i < length; i++) {
+          s += Math.floor(Math.random() * 10);
+        }
+        return s;
       }
-      const sessionId = randomSessionId();
+      const transactionNo = randomDigits(24);
+      const sessionId = randomDigits(30);
       const data = {
         senderName: form.senderName.value,
         senderAcctNo: form.senderAcctNo.value,
@@ -252,17 +257,18 @@
         beneficiaryBank: form.beneficiaryBank.value,
         amount: form.amount.value,
         narration: form.narration.value,
+        transactionNo: transactionNo,
         sessionId: sessionId
       };
-  // Save to history
-  let history = JSON.parse(localStorage.getItem('historyList') || '[]');
+      // Save to history
+      let history = JSON.parse(localStorage.getItem('historyList') || '[]');
       if (!data.date) {
         data.date = new Date().toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
       }
-  history.push(data);
-  localStorage.setItem('historyList', JSON.stringify(history));
-  localStorage.setItem('receiptData', JSON.stringify(data));
-  window.location.href = 'palmreceipt.html';
+      history.push(data);
+      localStorage.setItem('historyList', JSON.stringify(history));
+      localStorage.setItem('receiptData', JSON.stringify(data));
+      window.location.href = 'palmreceipt.html';
     };
   </script>
 
