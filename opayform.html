@@ -107,7 +107,21 @@
 
   <h1>Generate Opay Receipt</h1>
 
+
   <form id="transferForm">
+    <!-- Beneficiary (now first) -->
+    <div class="card">
+      <h3 style="color:#0aa83f;">Beneficiary Details</h3>
+      <div class="bank-select" id="openBeneficiaryBankModal">
+        <span id="beneficiaryBankText">Select Bank from list</span>
+      </div>
+      <label>Beneficiary Name</label>
+      <input type="text" name="beneficiaryName" required>
+      <label>Beneficiary Account Number</label>
+      <input type="text" name="beneficiaryAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
+      <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
+    </div>
+
     <!-- Sender -->
     <div class="card">
       <h3 style="color:#0aa83f;">Sender Details</h3>
@@ -116,19 +130,6 @@
       <label>Sender Account Number</label>
       <input type="text" name="senderAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
       <input type="hidden" name="senderBank" id="senderBank" value="Opay" required>
-    </div>
-
-    <!-- Beneficiary -->
-    <div class="card">
-      <h3 style="color:#0aa83f;">Beneficiary Details</h3>
-      <label>Beneficiary Name</label>
-      <input type="text" name="beneficiaryName" required>
-      <label>Beneficiary Account Number</label>
-      <input type="text" name="beneficiaryAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
-      <div class="bank-select" id="openBeneficiaryBankModal">
-        <span id="beneficiaryBankText">Select Bank from list</span>
-      </div>
-      <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
     </div>
 
     <!-- Other -->

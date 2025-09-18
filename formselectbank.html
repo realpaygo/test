@@ -64,9 +64,12 @@
 </head>
 <body>
   <div class="header">Select Beneficiary Bank</div>
+  <div style="max-width:400px;margin:20px auto 0 auto;padding:0 10px;">
+    <input id="bankSearch" type="text" placeholder="Search bank..." style="width:100%;padding:10px 12px;margin-bottom:10px;border-radius:8px;border:1px solid #ddd;font-size:15px;">
+  </div>
   <div class="bank-list" id="bankList"></div>
   <script>
-    // List of banks and their icon filenames (add more as needed)
+    // 30+ banks with icons (use available icons, fallback to default.jpg)
     const banks = [
       { name: 'Access Bank', icon: 'access.png' },
       { name: 'UBA', icon: 'uba.png' },
@@ -93,35 +96,71 @@
       { name: 'Titan Trust Bank', icon: 'titan.png' },
       { name: 'FCMB', icon: 'fcmb.png' },
       { name: 'Paga', icon: 'paga.png' },
+      { name: 'Moniepoint', icon: 'moniepoint.png' },
+      { name: 'VFD Microfinance', icon: 'vfd.png' },
+      { name: 'FairMoney', icon: 'fairmoney.png' },
+      { name: '9PSB', icon: '9psb.png' },
+      { name: 'SunTrust', icon: 'suntrust.png' },
+      { name: 'Default', icon: 'default.jpg' },
       { name: 'Other', icon: 'default.jpg' }
     ];
+    // Add more banks to reach 30+
+    const moreBanks = [
+      { name: 'CitiBank', icon: 'default.jpg' },
+      { name: 'Stanbic IBTC', icon: 'stanbic.png' },
+      { name: 'Unity Bank', icon: 'unity.png' },
+      { name: 'Polaris Bank', icon: 'default.jpg' },
+      { name: 'SunTrust Bank', icon: 'suntrust.png' },
+      { name: 'FBNQuest', icon: 'default.jpg' },
+      { name: 'Rand Merchant Bank', icon: 'default.jpg' },
+      { name: 'Coronation Merchant Bank', icon: 'default.jpg' },
+      { name: 'FSDH Merchant Bank', icon: 'default.jpg' },
+      { name: 'Nova Merchant Bank', icon: 'default.jpg' },
+      { name: 'TAJ Bank', icon: 'default.jpg' },
+      { name: 'SunTrust', icon: 'suntrust.png' },
+      { name: '9PSB', icon: '9psb.png' },
+      { name: 'FairMoney', icon: 'fairmoney.png' },
+      { name: 'VFD Microfinance', icon: 'vfd.png' }
+    ];
+    banks.push(...moreBanks);
+    // Remove duplicates by name
+    const uniqueBanks = Array.from(new Map(banks.map(b => [b.name, b])).values());
     const bankList = document.getElementById('bankList');
+    const bankSearch = document.getElementById('bankSearch');
     // Determine which form page to return to using a flag
     let formType = localStorage.getItem('formSelectBankType') || 'opay';
-    banks.forEach(bank => {
-      const div = document.createElement('div');
-      div.className = 'bank-item';
-      div.innerHTML = `
-        <img class="bank-icon" src="images/${bank.icon}" onerror="this.src='images/default.jpg'" alt="${bank.name}">
-        <span class="bank-name">${bank.name}</span>
-      `;
-      div.onclick = function() {
-        // Save selected bank to the correct temp storage and redirect
-        if (formType === 'opay') {
-          let temp = JSON.parse(localStorage.getItem('opayFormTemp') || '{}');
-          temp.beneficiaryBank = bank.name;
-          localStorage.setItem('opayFormTemp', JSON.stringify(temp));
-          localStorage.removeItem('formSelectBankType');
-          window.location.href = 'opayform.html';
-        } else {
-          let temp = JSON.parse(localStorage.getItem('palmpayFormTemp') || '{}');
-          temp.beneficiaryBank = bank.name;
-          localStorage.setItem('palmpayFormTemp', JSON.stringify(temp));
-          localStorage.removeItem('formSelectBankType');
-          window.location.href = 'palmpayform.html';
-        }
-      };
-      bankList.appendChild(div);
+
+    function renderBanks(filter = '') {
+      bankList.innerHTML = '';
+      uniqueBanks.filter(bank => bank.name.toLowerCase().includes(filter.toLowerCase())).forEach(bank => {
+        const div = document.createElement('div');
+        div.className = 'bank-item';
+        div.innerHTML = `
+          <img class="bank-icon" src="images/${bank.icon}" onerror="this.src='images/default.jpg'" alt="${bank.name}">
+          <span class="bank-name">${bank.name}</span>
+        `;
+        div.onclick = function() {
+          // Save selected bank to the correct temp storage and redirect
+          if (formType === 'opay') {
+            let temp = JSON.parse(localStorage.getItem('opayFormTemp') || '{}');
+            temp.beneficiaryBank = bank.name;
+            localStorage.setItem('opayFormTemp', JSON.stringify(temp));
+            localStorage.removeItem('formSelectBankType');
+            window.location.href = 'opayform.html';
+          } else {
+            let temp = JSON.parse(localStorage.getItem('palmpayFormTemp') || '{}');
+            temp.beneficiaryBank = bank.name;
+            localStorage.setItem('palmpayFormTemp', JSON.stringify(temp));
+            localStorage.removeItem('formSelectBankType');
+            window.location.href = 'palmpayform.html';
+          }
+        };
+        bankList.appendChild(div);
+      });
+    }
+    renderBanks();
+    bankSearch.addEventListener('input', function() {
+      renderBanks(this.value);
     });
   </script>
 </body>
