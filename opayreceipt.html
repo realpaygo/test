@@ -424,7 +424,7 @@
     <!-- Main Content -->
     <div class="scroll-view">
       <div class="card" style="margin-top: 20px;">
-        <div class="profile-image"><img src="images/history/logo.png" alt=""></div>
+  <div class="profile-image"><img id="bankLogo" src="images/history/logo.png" alt="Bank Logo"></div>
         <div class="amount-section">
           <div class="transfer-text"></div>
           <div class="amount">₦2,000.00</div>
@@ -545,6 +545,35 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Map bank names to icon filenames
+    const bankIcons = {
+      'Access Bank': 'access.png',
+      'UBA': 'uba.png',
+      'GTBank': 'gtbank.png',
+      'First Bank': 'firstbank.png',
+      'Zenith Bank': 'zenith.png',
+      'Opay': 'opay.png',
+      'PalmPay': 'palmpay.png',
+      'Kuda': 'kuda.png',
+      'Wema Bank': 'wema.png',
+      'Fidelity Bank': 'fidelity.png',
+      'Union Bank': 'union.png',
+      'Sterling Bank': 'sterling.png',
+      'Ecobank': 'ecobank.png',
+      'Stanbic IBTC': 'stanbic.png',
+      'Providus Bank': 'providus.png',
+      'Jaiz Bank': 'jaiz.png',
+      'Heritage Bank': 'heritage.png',
+      'Unity Bank': 'unity.png',
+      'Keystone Bank': 'keystone.png',
+      'SunTrust Bank': 'suntrust.png',
+      'Globus Bank': 'globus.png',
+      'Parallex Bank': 'parallex.png',
+      'Titan Trust Bank': 'titan.png',
+      'FCMB': 'fcmb.png',
+      'Paga': 'paga.png',
+      'Other': 'default.jpg'
+    };
     function randomDigits(length) {
       let s = '';
       for (let i = 0; i < length; i++) {
@@ -570,15 +599,23 @@
         return;
       }
 
-      // Generate 24-digit transaction number and 30-digit session ID if not present
+      // Set bank logo if available
+      var bankLogo = document.getElementById('bankLogo');
+      var bankName = data.beneficiaryBank || '';
+      var iconFile = bankIcons[bankName] || 'default.jpg';
+      if (bankLogo) {
+        bankLogo.src = 'images/' + iconFile;
+        bankLogo.onerror = function() { this.src = 'images/default.jpg'; };
+      }
+      // Generate and persist 24-digit transaction number and 30-digit session ID if not present
       if (!data.transactionNo) {
         data.transactionNo = randomDigits(24);
+        localStorage.setItem('receiptData', JSON.stringify(data));
       }
       if (!data.sessionId) {
         data.sessionId = randomDigits(30);
+        localStorage.setItem('receiptData', JSON.stringify(data));
       }
-      // Save back to localStorage for consistency
-      localStorage.setItem('receiptData', JSON.stringify(data));
 
       // Update ALL transfer-to text elements
       var transferTextValue = 'Transfer to ' + data.beneficiaryName;
@@ -608,7 +645,7 @@
         if (details[0]) {
           details[0].innerHTML = data.beneficiaryName + '<br><span style="font-size:12px; color:#616161;">' + (data.beneficiaryBank || 'Bank') + ' | ' + (data.beneficiaryAcctNo || 'Account') + '</span>';
         }
-        // Transaction No. (24 digits)
+        // Transaction No. (24 digits, persistent)
         if (details[1]) {
           details[1].innerHTML = data.transactionNo + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
         }
@@ -616,7 +653,7 @@
         if (details[3] && data.date) {
           details[3].textContent = data.date;
         }
-        // Session ID (30 digits)
+        // Session ID (30 digits, persistent)
         if (details[4]) {
           details[4].innerHTML = data.sessionId + ' <img style="width:13px; height:13px;" src="images/history/copy.png" alt="">';
         }

@@ -126,7 +126,7 @@
       <label>Beneficiary Account Number</label>
       <input type="text" name="beneficiaryAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
       <div class="bank-select" id="openBeneficiaryBankModal">
-        <span>Select Bank from list</span>
+        <span id="beneficiaryBankText">Select Bank from list</span>
       </div>
       <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
     </div>
@@ -187,19 +187,40 @@
     const bankModal = document.getElementById('bankModal');
 
     openBeneficiaryBankModal.addEventListener('click', () => {
-      bankModal.style.display = 'flex';
-      bankModal.setAttribute('data-bank-type', 'beneficiary');
+      // Save current form state to localStorage
+      const form = document.getElementById('transferForm');
+      const data = {
+        senderName: form.senderName.value,
+        senderAcctNo: form.senderAcctNo.value,
+        senderBank: form.senderBank.value,
+        beneficiaryName: form.beneficiaryName.value,
+        beneficiaryAcctNo: form.beneficiaryAcctNo.value,
+        beneficiaryBank: beneficiaryBank.value,
+        amount: form.amount.value,
+        narration: form.narration.value
+      };
+      localStorage.setItem('opayFormTemp', JSON.stringify(data));
+      localStorage.setItem('formSelectBankType', 'opay');
+      window.location.href = 'formselectbank.html';
     });
 
     function closeBankModal() {
       bankModal.style.display = 'none';
     }
 
-    function selectBank(bank) {
-      beneficiaryBank.value = bank;
-      openBeneficiaryBankModal.innerHTML = `<span>${bank}</span>`;
-      closeBankModal();
-    }
+    // On page load, restore beneficiary bank if selected
+    document.addEventListener('DOMContentLoaded', function() {
+      const temp = localStorage.getItem('opayFormTemp');
+      if (temp) {
+        try {
+          const data = JSON.parse(temp);
+          if (data.beneficiaryBank) {
+            beneficiaryBank.value = data.beneficiaryBank;
+            document.getElementById('beneficiaryBankText').textContent = data.beneficiaryBank;
+          }
+        } catch(e) {}
+      }
+    });
 
     window.onclick = function(e) {
       if (e.target === bankModal) {

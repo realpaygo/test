@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Bank</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
+    .header {
+      background: #1a73e8;
+      color: #fff;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .bank-list {
+      max-width: 400px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 10px 0;
+    }
+    .bank-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bank-item:last-child {
+      border-bottom: none;
+    }
+    .bank-item:hover {
+      background: #f0f7ff;
+    }
+    .bank-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+      background: #fff;
+      border: 1px solid #eee;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .bank-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Select Beneficiary Bank</div>
+  <div class="bank-list" id="bankList"></div>
+  <script>
+    // List of banks and their icon filenames (add more as needed)
+    const banks = [
+      { name: 'Access Bank', icon: 'access.png' },
+      { name: 'UBA', icon: 'uba.png' },
+      { name: 'GTBank', icon: 'gtbank.png' },
+      { name: 'First Bank', icon: 'firstbank.png' },
+      { name: 'Zenith Bank', icon: 'zenith.png' },
+      { name: 'Opay', icon: 'opay.png' },
+      { name: 'PalmPay', icon: 'palmpay.png' },
+      { name: 'Kuda', icon: 'kuda.png' },
+      { name: 'Wema Bank', icon: 'wema.png' },
+      { name: 'Fidelity Bank', icon: 'fidelity.png' },
+      { name: 'Union Bank', icon: 'union.png' },
+      { name: 'Sterling Bank', icon: 'sterling.png' },
+      { name: 'Ecobank', icon: 'ecobank.png' },
+      { name: 'Stanbic IBTC', icon: 'stanbic.png' },
+      { name: 'Providus Bank', icon: 'providus.png' },
+      { name: 'Jaiz Bank', icon: 'jaiz.png' },
+      { name: 'Heritage Bank', icon: 'heritage.png' },
+      { name: 'Unity Bank', icon: 'unity.png' },
+      { name: 'Keystone Bank', icon: 'keystone.png' },
+      { name: 'SunTrust Bank', icon: 'suntrust.png' },
+      { name: 'Globus Bank', icon: 'globus.png' },
+      { name: 'Parallex Bank', icon: 'parallex.png' },
+      { name: 'Titan Trust Bank', icon: 'titan.png' },
+      { name: 'FCMB', icon: 'fcmb.png' },
+      { name: 'Paga', icon: 'paga.png' },
+      { name: 'Other', icon: 'default.jpg' }
+    ];
+    const bankList = document.getElementById('bankList');
+    // Determine which form page to return to using a flag
+    let formType = localStorage.getItem('formSelectBankType') || 'opay';
+    banks.forEach(bank => {
+      const div = document.createElement('div');
+      div.className = 'bank-item';
+      div.innerHTML = `
+        <img class="bank-icon" src="images/${bank.icon}" onerror="this.src='images/default.jpg'" alt="${bank.name}">
+        <span class="bank-name">${bank.name}</span>
+      `;
+      div.onclick = function() {
+        // Save selected bank to the correct temp storage and redirect
+        if (formType === 'opay') {
+          let temp = JSON.parse(localStorage.getItem('opayFormTemp') || '{}');
+          temp.beneficiaryBank = bank.name;
+          localStorage.setItem('opayFormTemp', JSON.stringify(temp));
+          localStorage.removeItem('formSelectBankType');
+          window.location.href = 'opayform.html';
+        } else {
+          let temp = JSON.parse(localStorage.getItem('palmpayFormTemp') || '{}');
+          temp.beneficiaryBank = bank.name;
+          localStorage.setItem('palmpayFormTemp', JSON.stringify(temp));
+          localStorage.removeItem('formSelectBankType');
+          window.location.href = 'palmpayform.html';
+        }
+      };
+      bankList.appendChild(div);
+    });
+  </script>
+</body>
+</html>

@@ -294,6 +294,22 @@
         var sacct = data.senderAcctNo || 'Account';
         sender.innerHTML = sname + '<br><span style="color:#757575;">' + sbank + ' | ' + sacct + '</span>';
       }
+      // Transaction No. (24 digits, persistent)
+      var txnNoElem = document.querySelectorAll('.row .label');
+      for (var i = 0; i < txnNoElem.length; i++) {
+        if (txnNoElem[i].textContent.trim() === 'Transaction No.') {
+          var valueDiv = txnNoElem[i].parentElement.querySelector('.value');
+          if (valueDiv && data.transactionNo) {
+            valueDiv.textContent = data.transactionNo;
+          }
+        }
+        if (txnNoElem[i].textContent.trim() === 'Session ID') {
+          var valueDiv = txnNoElem[i].parentElement.querySelector('.value');
+          if (valueDiv && data.sessionId) {
+            valueDiv.textContent = data.sessionId;
+          }
+        }
+      }
     });
 
     // Share as Image functionality

@@ -355,8 +355,45 @@
 <script>
   // Load beneficiary name, bank, account number, amount, completion time, and session ID from localStorage and update receipt
   document.addEventListener('DOMContentLoaded', function() {
+    // Map bank names to icon filenames
+    const bankIcons = {
+      'Access Bank': 'access.png',
+      'UBA': 'uba.png',
+      'GTBank': 'gtbank.png',
+      'First Bank': 'firstbank.png',
+      'Zenith Bank': 'zenith.png',
+      'Opay': 'opay.png',
+      'PalmPay': 'palmpay.png',
+      'Kuda': 'kuda.png',
+      'Wema Bank': 'wema.png',
+      'Fidelity Bank': 'fidelity.png',
+      'Union Bank': 'union.png',
+      'Sterling Bank': 'sterling.png',
+      'Ecobank': 'ecobank.png',
+      'Stanbic IBTC': 'stanbic.png',
+      'Providus Bank': 'providus.png',
+      'Jaiz Bank': 'jaiz.png',
+      'Heritage Bank': 'heritage.png',
+      'Unity Bank': 'unity.png',
+      'Keystone Bank': 'keystone.png',
+      'SunTrust Bank': 'suntrust.png',
+      'Globus Bank': 'globus.png',
+      'Parallex Bank': 'parallex.png',
+      'Titan Trust Bank': 'titan.png',
+      'FCMB': 'fcmb.png',
+      'Paga': 'paga.png',
+      'Other': 'default.jpg'
+    };
     try {
       var data = JSON.parse(localStorage.getItem('receiptData'));
+      // Set bank logo if available
+      var bankLogo = document.getElementById('circleimageview2');
+      var bankName = data && data.beneficiaryBank ? data.beneficiaryBank : '';
+      var iconFile = bankIcons[bankName] || 'default.jpg';
+      if (bankLogo) {
+        bankLogo.src = 'images/' + iconFile;
+        bankLogo.onerror = function() { this.src = 'images/default.jpg'; };
+      }
       if (data) {
         if (data.beneficiaryName) {
           document.getElementById('accountname').textContent = data.beneficiaryName;
