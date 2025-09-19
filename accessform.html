@@ -2,23 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Access Bank - Transfer Form</title>
+  <title>Access - Transfer Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 20px; }
-    h1 { text-align: center; font-size: 18px; margin-bottom: 15px; color: #1a73e8; }
+    h1 { text-align: center; font-size: 18px; margin-bottom: 15px; color: #0aa83f; }
     .card { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     label { font-size: 12px; color: #666; margin-bottom: 3px; }
     input[type="text"], input[type="number"] { padding: 8px; border: none; border-radius: 5px; background: #f3f3f3; margin-bottom: 12px; width: 100%; box-sizing: border-box; }
-    button { display: block; width: 100%; padding: 10px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #1558b0; }
+    button { display: block; width: 100%; padding: 10px; background: #0aa83f; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #088a32; }
+    .bank-select {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f5f5dc;
+      border: 2px solid #bfa100;
+      color: #bfa100;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    .bank-select span {
+      color: #bfa100;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>Generate Access Bank Receipt</h1>
+  <h1>Generate Access Receipt</h1>
   <form id="transferForm">
     <div class="card">
-      <h3 style="color:#1a73e8;">Beneficiary Details</h3>
+      <h3 style="color:#0aa83f;">Beneficiary Details</h3>
       <div class="bank-select" id="openBeneficiaryBankModal">
         <span id="beneficiaryBankText">Select Bank from list</span>
       </div>
@@ -29,15 +46,15 @@
       <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
     </div>
     <div class="card">
-      <h3 style="color:#1a73e8;">Sender Details</h3>
+      <h3 style="color:#0aa83f;">Sender Details</h3>
       <label>Sender Name</label>
       <input type="text" name="senderName" required>
       <label>Sender Account Number</label>
       <input type="text" name="senderAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
-      <input type="hidden" name="senderBank" id="senderBank" value="Access Bank" required>
+      <input type="hidden" name="senderBank" id="senderBank" value="Moniepoint" required>
     </div>
     <div class="card">
-      <h3 style="color:#1a73e8;">Other Information</h3>
+      <h3 style="color:#0aa83f;">Other Information</h3>
       <label>Amount</label>
       <input type="number" name="amount" required>
       <label>Narration</label>
@@ -60,12 +77,12 @@
         amount: form.amount.value,
         narration: form.narration.value
       };
-      localStorage.setItem('accessFormTemp', JSON.stringify(data));
-      localStorage.setItem('formSelectBankType', 'access');
+      localStorage.setItem('moniepointFormTemp', JSON.stringify(data));
+      localStorage.setItem('formSelectBankType', 'moniepoint');
       window.location.href = 'formselectbank.html';
     });
     document.addEventListener('DOMContentLoaded', function() {
-      const temp = localStorage.getItem('accessFormTemp');
+      const temp = localStorage.getItem('moniepointFormTemp');
       if (temp) {
         try {
           const data = JSON.parse(temp);
@@ -111,7 +128,7 @@
       history.push(data);
       localStorage.setItem('historyList', JSON.stringify(history));
       localStorage.setItem('receiptData', JSON.stringify(data));
-      window.location.href = 'access.html';
+      window.location.href = 'moniepoint.html';
     };
   </script>
 </body>
