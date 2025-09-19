@@ -33,7 +33,8 @@
     document.getElementById('transferBtn').onclick = function() {
       var form = document.getElementById('transferForm');
       if (form.checkValidity()) {
-        window.location.href = 'moniepoint.html';
+        // Try both relative and absolute navigation for robustness
+        window.location.assign('moniepoint.html');
       } else {
         form.reportValidity();
       }
