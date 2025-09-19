@@ -7,6 +7,35 @@
   <title>Dashboard</title>
   <!-- SweetAlert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!sessionStorage.getItem('authenticated')) {
+        Swal.fire({
+          title: 'Enter Password',
+          input: 'password',
+          inputLabel: 'Password',
+          inputPlaceholder: 'Enter password',
+          inputAttributes: { autocapitalize: 'off', autocorrect: 'off' },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'Enter',
+          preConfirm: (value) => {
+            if (value !== '1234567') {
+              Swal.showValidationMessage('Incorrect password');
+            }
+            return value === '1234567';
+          }
+        }).then((result) => {
+          if (result.value === true) {
+            sessionStorage.setItem('authenticated', '1');
+            location.reload();
+          } else {
+            location.reload();
+          }
+        });
+      }
+    });
+  </script>
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
