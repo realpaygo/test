@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Moniepoint - Transfer Form</title>
+  <title>Kuda - Transfer Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 20px; }
-    h1 { text-align: center; font-size: 18px; margin-bottom: 15px; color: #0aa83f; }
+    h1 { text-align: center; font-size: 18px; margin-bottom: 15px; color: #5f3dc4; }
     .card { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     label { font-size: 12px; color: #666; margin-bottom: 3px; }
     input[type="text"], input[type="number"] { padding: 8px; border: none; border-radius: 5px; background: #f3f3f3; margin-bottom: 12px; width: 100%; box-sizing: border-box; }
-    button { display: block; width: 100%; padding: 10px; background: #0aa83f; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #088a32; }
+    button { display: block; width: 100%; padding: 10px; background: #5f3dc4; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #432c7a; }
+    .bank-select { display: flex; align-items: center; gap: 10px; background: #ede9fe; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 12px; }
+    .bank-select span { color: #5f3dc4; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Generate Moniepoint Receipt</h1>
+  <h1>Generate Kuda Receipt</h1>
   <form id="transferForm">
     <div class="card">
-      <h3 style="color:#0aa83f;">Beneficiary Details</h3>
+      <h3 style="color:#5f3dc4;">Beneficiary Details</h3>
       <div class="bank-select" id="openBeneficiaryBankModal">
         <span id="beneficiaryBankText">Select Bank from list</span>
       </div>
@@ -29,15 +31,15 @@
       <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
     </div>
     <div class="card">
-      <h3 style="color:#0aa83f;">Sender Details</h3>
+      <h3 style="color:#5f3dc4;">Sender Details</h3>
       <label>Sender Name</label>
       <input type="text" name="senderName" required>
       <label>Sender Account Number</label>
       <input type="text" name="senderAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
-      <input type="hidden" name="senderBank" id="senderBank" value="Moniepoint" required>
+      <input type="hidden" name="senderBank" id="senderBank" value="Kuda" required>
     </div>
     <div class="card">
-      <h3 style="color:#0aa83f;">Other Information</h3>
+      <h3 style="color:#5f3dc4;">Other Information</h3>
       <label>Amount</label>
       <input type="number" name="amount" required>
       <label>Narration</label>
@@ -46,6 +48,7 @@
     <button type="submit">Transfer</button>
   </form>
   <script>
+    // Beneficiary bank modal logic
     const openBeneficiaryBankModal = document.getElementById('openBeneficiaryBankModal');
     const beneficiaryBank = document.getElementById('beneficiaryBank');
     openBeneficiaryBankModal.addEventListener('click', () => {
@@ -60,12 +63,12 @@
         amount: form.amount.value,
         narration: form.narration.value
       };
-      localStorage.setItem('moniepointFormTemp', JSON.stringify(data));
-      localStorage.setItem('formSelectBankType', 'moniepoint');
+      localStorage.setItem('kudaFormTemp', JSON.stringify(data));
+      localStorage.setItem('formSelectBankType', 'kuda');
       window.location.href = 'formselectbank.html';
     });
     document.addEventListener('DOMContentLoaded', function() {
-      const temp = localStorage.getItem('moniepointFormTemp');
+      const temp = localStorage.getItem('kudaFormTemp');
       if (temp) {
         try {
           const data = JSON.parse(temp);
@@ -111,7 +114,7 @@
       history.push(data);
       localStorage.setItem('historyList', JSON.stringify(history));
       localStorage.setItem('receiptData', JSON.stringify(data));
-      window.location.href = 'moniepoint.html';
+      window.location.href = 'kudareceipt.html';
     };
   </script>
 </body>

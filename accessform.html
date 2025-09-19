@@ -15,13 +15,29 @@
   </style>
 </head>
 <body>
-  <h1>Access Bank Transfer</h1>
+  <h1>Generate Access Bank Receipt</h1>
   <form id="transferForm">
     <div class="card">
-      <label>Account Name</label>
-      <input type="text" name="accountName" required>
-      <label>Account Number</label>
-      <input type="text" name="accountNumber" minlength="10" maxlength="10" required pattern="\d{10}" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
+      <h3 style="color:#1a73e8;">Beneficiary Details</h3>
+      <div class="bank-select" id="openBeneficiaryBankModal">
+        <span id="beneficiaryBankText">Select Bank from list</span>
+      </div>
+      <label>Beneficiary Name</label>
+      <input type="text" name="beneficiaryName" required>
+      <label>Beneficiary Account Number</label>
+      <input type="text" name="beneficiaryAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
+      <input type="hidden" name="beneficiaryBank" id="beneficiaryBank" required>
+    </div>
+    <div class="card">
+      <h3 style="color:#1a73e8;">Sender Details</h3>
+      <label>Sender Name</label>
+      <input type="text" name="senderName" required>
+      <label>Sender Account Number</label>
+      <input type="text" name="senderAcctNo" minlength="10" maxlength="10" required pattern="\d{10}" title="Enter a 10-digit account number" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,10)">
+      <input type="hidden" name="senderBank" id="senderBank" value="Access Bank" required>
+    </div>
+    <div class="card">
+      <h3 style="color:#1a73e8;">Other Information</h3>
       <label>Amount</label>
       <input type="number" name="amount" required>
       <label>Narration</label>
@@ -30,8 +46,71 @@
     <button type="submit">Transfer</button>
   </form>
   <script>
+    const openBeneficiaryBankModal = document.getElementById('openBeneficiaryBankModal');
+    const beneficiaryBank = document.getElementById('beneficiaryBank');
+    openBeneficiaryBankModal.addEventListener('click', () => {
+      const form = document.getElementById('transferForm');
+      const data = {
+        senderName: form.senderName.value,
+        senderAcctNo: form.senderAcctNo.value,
+        senderBank: form.senderBank.value,
+        beneficiaryName: form.beneficiaryName.value,
+        beneficiaryAcctNo: form.beneficiaryAcctNo.value,
+        beneficiaryBank: beneficiaryBank.value,
+        amount: form.amount.value,
+        narration: form.narration.value
+      };
+      localStorage.setItem('accessFormTemp', JSON.stringify(data));
+      localStorage.setItem('formSelectBankType', 'access');
+      window.location.href = 'formselectbank.html';
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      const temp = localStorage.getItem('accessFormTemp');
+      if (temp) {
+        try {
+          const data = JSON.parse(temp);
+          if (data.beneficiaryBank) {
+            beneficiaryBank.value = data.beneficiaryBank;
+            document.getElementById('beneficiaryBankText').textContent = data.beneficiaryBank;
+          }
+        } catch(e) {}
+      }
+    });
     document.getElementById('transferForm').onsubmit = function(e) {
       e.preventDefault();
+      const form = this;
+      if (form.senderAcctNo.value.length !== 10 || form.beneficiaryAcctNo.value.length !== 10) {
+        alert('Account numbers must be exactly 10 digits.');
+        return;
+      }
+      function randomDigits(length) {
+        let s = '';
+        for (let i = 0; i < length; i++) {
+          s += Math.floor(Math.random() * 10);
+        }
+        return s;
+      }
+      const transactionNo = randomDigits(24);
+      const sessionId = randomDigits(30);
+      const data = {
+        senderName: form.senderName.value,
+        senderAcctNo: form.senderAcctNo.value,
+        senderBank: form.senderBank.value,
+        beneficiaryName: form.beneficiaryName.value,
+        beneficiaryAcctNo: form.beneficiaryAcctNo.value,
+        beneficiaryBank: form.beneficiaryBank.value,
+        amount: form.amount.value,
+        narration: form.narration.value,
+        transactionNo: transactionNo,
+        sessionId: sessionId
+      };
+      let history = JSON.parse(localStorage.getItem('historyList') || '[]');
+      if (!data.date) {
+        data.date = new Date().toLocaleString('en-NG', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      }
+      history.push(data);
+      localStorage.setItem('historyList', JSON.stringify(history));
+      localStorage.setItem('receiptData', JSON.stringify(data));
       window.location.href = 'access.html';
     };
   </script>
