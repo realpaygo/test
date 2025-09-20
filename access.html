@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>body {
+    background-color: white;
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.receipt {
+    width: 80%;
+    margin: 30px auto;
+    display: block;
+    padding: 25px;
+}
+
+.info {
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 100;
+}
+
+.info-container {
+    background-color: white;
+    padding: 100px;
+    text-align: center;
+    margin: 20% auto;
+    display: block;
+    font-weight: bold;
+    width: 50%;
+}
+
+@media (max-width: 767px) {
+    .info {
+        display: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .receipt {
+        width: 75%;
+        margin: 30px auto;
+        display: block;
+        padding: 40px;
+    }  
+
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 80px;
+}
+
+.trans-top {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(19, 37, 139);
+    text-align: center;
+}
+
+.generated {
+    font-size: 6px;
+    margin: 10px 0px 10px;
+    color: gray;
+    text-align: center;
+}
+
+.access-more {
+    font-weight: bolder;
+}
+
+
+.container-flex {
+    display: grid;
+    grid-template-columns: 105px 1fr;
+    padding: 10px 0px;
+    border-bottom: 1px solid lightgray;
+}
+
+.label {
+    font-size: 8px;
+    color: rgb(255, 150, 2);
+    font-weight: bold;
+    text-align: left;
+}
+
+.bb {
+    padding-top: 25px;
+}
+
+.values {
+    font-size: 8px;
+    color: rgb(19, 37, 139);
+    text-align: left;
+    font-weight: 500;
+}
+
+.values2 {
+    font-size: 8px;
+    color: rgb(19, 37, 139);
+    font-weight: 500;
+    padding: 5px 0px;
+}
+
+.lil-bottom-text {
+    font-size: 7px;
+    margin: 12px 0px;
+    color: gray;
+}
+
+.blue {
+    color: blue;
+    text-decoration: underline;
+}
+
+.footer {
+    font-size: 7px;
+    margin: 12px 0px;
+    color: gray;
+}</style>
+        </head>
+        <body>
+            
+
+    
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta property="og:title" content="ACCESS BANK">
+        <meta property="og:description" content="ACCESS BANK">
+        <meta property="og:image" content="img/payme.png">
+        <link rel="stylesheet" href="css/receipt.css">
+        <link rel="icon" href="img/icon.png" type="image/png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>
+            ACCESS BANK
+        </title> 
+
+        <div class="receipt">
+            <div class="top">
+                <div>
+                    <img width="120px" src="images/accesslogo.png">
+                </div>
+
+                <div>
+                    <img width="100px" src="https://www.accessbankplc.com">
+                </div>
+            </div>
+
+            <div class="trans-top">
+                Transaction Receipt
+            </div>
+
+            <div class="generated">
+                Generated from <span class="access-more">AccessMore</span> on <span class="date">null</span> <span class="time">null</span>
+            </div>
+
+            <div class="container">
+                <div class="container-flex">
+                    <div class="label">
+                        Transaction Amount
+                    </div>
+
+                    <div class="values amount-js">N0.00</div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Transaction Type
+                    </div>
+
+                    <div class="values">
+                        INTER-BANK
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Transaction Date
+                    </div>
+
+                    <div class="values both-date-time">
+                        2025-02-14 12:00:00
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Sender
+                    </div>
+
+                    <div class="values sender-js">
+                        MAX TECH
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        <div class="bb">
+                            Beneficiary
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="values2 receiver-name-js">
+                            CYBER SPACE
+                        </div>
+
+                        <div class="values2 receiver-num-js">
+                            1234567890
+                        </div>
+
+                        <div class="values2 receiver-bank-js">
+                            OPAY BANK
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Remark
+                    </div>
+
+                    <div class="values narration">
+                        Bills
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Transaction Reference
+                    </div>
+
+                    <div class="values">
+                        NXG00001<span class="ref">0000000000000000000000000</span>
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Session id
+                    </div>
+
+                    <div class="values sess-id">
+                        0000000000000000000000000000000
+                    </div>
+                </div>
+
+                <div class="container-flex">
+                    <div class="label">
+                        Transaction Status
+                    </div>
+
+                    <div class="values">
+                        Transfer Request Successful
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lil-bottom-text">
+                if you have any question or would like more information,
+                 please call our 24-hour Contact Centre on
+                 <br>
+                 <span class="blue">0700CallAccess</span>, <span class="blue">0700 30000000</span>, 
+                 <span class="blue">+234 021-2712005-7</span>, <span class="blue">+234 021-2802500</span> or send
+                  an email to
+                  <br>
+                  <span class="blue">contactcenter@accessbankplc.com</span>
+                  <br>
+                  Thank you for choosing Access Bank.
+            </div>
+
+            <div class="footer">
+                Banking with Access: Branch | ATM | Online | Mobile | Contact center 
+            </div>
+        </div>
+
+        <script src="js/receipt.js"></script>
+    
+
+            <script>
+const date = document.querySelector('.date');
+const time = document.querySelector('.time');
+const recAmount = document.querySelector('.amount-js');
+const bDateTime = document.querySelector('.both-date-time');
+const sender = document.querySelector('.sender-js');
+const receiverName = document.querySelector('.receiver-name-js');
+const receiverNum = document.querySelector('.receiver-num-js');
+const receiverBank = document.querySelector('.receiver-bank-js');
+const narration = document.querySelector('.narration');
+//const reference = document.querySelector('.ref');
+//const sess = document.querySelector('.sess-id');
+
+
+const bank = localStorage.getItem('receiverBank');
+
+date.innerHTML=`${localStorage.getItem('date')}`;
+time.innerHTML=`${localStorage.getItem('time')}`;
+recAmount.innerHTML=`N${Number(localStorage.getItem('amount')).toLocaleString()}.00`;
+sender.innerHTML=`${localStorage.getItem('senderName').toUpperCase()}`;
+bDateTime.innerHTML=`${localStorage.getItem('date')} ${localStorage.getItem('time')}`;
+receiverName.innerHTML=`${localStorage.getItem('receiverName').toUpperCase()}`;
+receiverNum.innerHTML=`${localStorage.getItem('receiverNo')}`;
+
+if(bank === 'access-bank') {
+    receiverBank.innerHTML=`ACCESS BANK PLC`;
+
+} else if (bank === 'eco-bank') {
+    receiverBank.innerHTML=`ECOBANK NIGERIA PLC`;
+
+} else if (bank === 'fcmb-bank') {
+    receiverBank.innerHTML=`FCMB MFB`;
+
+} else if (bank === 'fairmoney') {
+    receiverBank.innerHTML=`FAIRMONEY MFB`;
+
+} else if (bank === 'fidelity-bank') {
+    receiverBank.innerHTML=`FIDELITY BANK`;
+
+} else if (bank === 'first-bank') {
+    receiverBank.innerHTML=`FIRST BANK OF NIGERIA PLC`;
+
+} else if (bank === 'gtbank') {
+    receiverBank.innerHTML=`GUARANTY TRUST BANK PLC`;
+
+} else if (bank === 'keystone-bank') {
+    receiverBank.innerHTML=`KEYSTONE BANK PLC`;
+
+} else if (bank === 'kuda-bank') {
+    receiverBank.innerHTML=`KUDA MFB`;
+
+} else if (bank === 'moniepoint') {
+    receiverBank.innerHTML=`MONIE POINT`;
+
+} else if (bank === 'opay') {
+    receiverBank.innerHTML=`OPAY LIMITED`;
+
+} else if (bank === 'paga-bank') {
+    receiverBank.innerHTML=`PAGA`;
+
+} else if (bank === 'palmpay') {
+    receiverBank.innerHTML=`PALMPAY`;
+
+} else if (bank === 'polaris-bank') {
+    receiverBank.innerHTML=`POLARIS BANK PLC`;
+
+} else if (bank === 'stanbic-bank') {
+    receiverBank.innerHTML=`STANBIC-IBTC BANK PLC`;
+
+} else if (bank === 'union-bank') {
+    receiverBank.innerHTML=`UNION BANK OF NIGERIA`;
+
+} else if (bank === 'uba-bank') {
+    receiverBank.innerHTML=`UNITED BANK OF AFRICA PLC`;
+
+} else if (bank === 'unity-bank') {
+    receiverBank.innerHTML=`UNITY BANK PLC`;
+
+} else if (bank === 'wema-bank') {
+    receiverBank.innerHTML=`WEMA BANK PLC`;
+
+} else if (bank === 'zenith-bank') {
+    receiverBank.innerHTML=`ZENITH BANK PLC`;
+
+};
+
+narration.innerHTML=`${localStorage.getItem('narration').toUpperCase()}`;
+
+document.querySelector('.ref').innerHTML = create_random_string(25);
+
+function create_random_string(string_length) {
+  var random_string = '';
+  var characters = '1234567890';
+  for (var i = 0; i < string_length; i++) { 
+    random_string += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return random_string;
+}
+
+document.querySelector('.sess-id').innerHTML = create_random_string2(22);
+
+function create_random_string2(string_length) {
+  var random_string = '';
+  var characters = '1234567890';
+  for (var i = 0; i < string_length; i++) { 
+    random_string += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return random_string;
+}
+</script>
+        
+    
+</body>
