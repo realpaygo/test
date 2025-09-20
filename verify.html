@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    .container { max-width: 350px; margin: 60px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 30px 20px; }
+    h2 { text-align: center; color: #1a73e8; }
+    label { display: block; margin-top: 18px; color: #333; font-size: 14px; }
+    input[type="email"], input[type="text"] { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-top: 6px; font-size: 15px; }
+    button { width: 100%; padding: 12px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-weight: bold; margin-top: 22px; cursor: pointer; }
+    button:hover { background: #155ab6; }
+    .msg { text-align: center; margin-top: 18px; font-size: 14px; color: #d32f2f; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Email Verification</h2>
+    <form id="verifyForm">
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Verification PIN</label>
+      <input type="text" name="pin" maxlength="6" required>
+      <button type="submit">Verify</button>
+    </form>
+    <div class="msg" id="msg"></div>
+  </div>
+  <script>
+    document.getElementById('verifyForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const email = this.email.value.trim();
+      const pin = this.pin.value.trim();
+      if (!email || !pin) return;
+      const res = await fetch('http://localhost:3001/api/verify-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, pin })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById('msg').style.color = '#388e3c';
+        document.getElementById('msg').textContent = 'Email verified! You can now log in.';
+        setTimeout(() => window.location.href = 'login.html', 2000);
+      } else {
+        document.getElementById('msg').style.color = '#d32f2f';
+        document.getElementById('msg').textContent = data.error || 'Verification failed';
+      }
+    };
+  </script>
+</body>
+</html>

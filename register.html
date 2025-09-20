@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    .container { max-width: 350px; margin: 60px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 30px 20px; }
+    h2 { text-align: center; color: #1a73e8; }
+    label { display: block; margin-top: 18px; color: #333; font-size: 14px; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-top: 6px; font-size: 15px; }
+    button { width: 100%; padding: 12px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-weight: bold; margin-top: 22px; cursor: pointer; }
+    button:hover { background: #155ab6; }
+    .login-link { text-align: center; margin-top: 18px; font-size: 14px; }
+    .login-link a { color: #1a73e8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <form id="registerForm">
+  <label>Username</label>
+  <input type="text" name="username" required>
+  <label>Email</label>
+  <input type="email" name="email" required>
+  <label>Password</label>
+  <input type="password" name="password" required>
+  <button type="submit">Register</button>
+    </form>
+    <div class="login-link">Already have an account? <a href="login.html">Login</a></div>
+  </div>
+  <script>
+    document.getElementById('registerForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const username = this.username.value.trim();
+      const email = this.email.value.trim();
+      const password = this.password.value;
+      if (!username || !email || !password) return alert('All fields required');
+      try {
+        const res = await fetch('http://localhost:3001/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) return alert(data.error || 'Registration failed');
+  alert('Registration successful! Please check your email for your verification PIN.');
+  window.location.href = 'verify.html';
+      } catch (err) {
+        alert('Network error');
+      }
+    };
+  </script>
+</body>
+</html>

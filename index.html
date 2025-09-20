@@ -20,10 +20,10 @@
           allowEscapeKey: false,
           confirmButtonText: 'Enter',
           preConfirm: (value) => {
-            if (value !== '1234567') {
+            if (value !== '445566') {
               Swal.showValidationMessage('Incorrect password');
             }
-            return value === '1234567';
+            return value === '445566';
           }
         }).then((result) => {
           if (result.value === true) {
@@ -164,6 +164,13 @@
   </style>
 </head>
 <body>
+  <script>
+    // Require login for entry
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!user) {
+      window.location.href = 'login.html';
+    }
+  </script>
   <!-- Loader -->
   <div id="pageLoader" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#fff;z-index:2000;display:flex;align-items:center;justify-content:center;">
     <img src="images/load.png" id="loaderImg" style="width:60px;height:60px;animation:bounce 0.7s infinite alternate;" alt="Loading...">

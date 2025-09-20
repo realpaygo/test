@@ -129,7 +129,6 @@
     const bankSearch = document.getElementById('bankSearch');
     // Determine which form page to return to using a flag
     let formType = localStorage.getItem('formSelectBankType') || 'opay';
-
     function renderBanks(filter = '') {
       bankList.innerHTML = '';
       uniqueBanks.filter(bank => bank.name.toLowerCase().includes(filter.toLowerCase())).forEach(bank => {
@@ -147,12 +146,30 @@
             localStorage.setItem('opayFormTemp', JSON.stringify(temp));
             localStorage.removeItem('formSelectBankType');
             window.location.href = 'opayform.html';
-          } else {
+          } else if (formType === 'palmpay') {
             let temp = JSON.parse(localStorage.getItem('palmpayFormTemp') || '{}');
             temp.beneficiaryBank = bank.name;
             localStorage.setItem('palmpayFormTemp', JSON.stringify(temp));
             localStorage.removeItem('formSelectBankType');
             window.location.href = 'palmpayform.html';
+          } else if (formType === 'moniepoint') {
+            let temp = JSON.parse(localStorage.getItem('moniepointFormTemp') || '{}');
+            temp.beneficiaryBank = bank.name;
+            localStorage.setItem('moniepointFormTemp', JSON.stringify(temp));
+            localStorage.removeItem('formSelectBankType');
+            window.location.href = 'moniepointform.html';
+          } else if (formType === 'access') {
+            let temp = JSON.parse(localStorage.getItem('accessFormTemp') || '{}');
+            temp.beneficiaryBank = bank.name;
+            localStorage.setItem('accessFormTemp', JSON.stringify(temp));
+            localStorage.removeItem('formSelectBankType');
+            window.location.href = 'accessform.html';
+          } else if (formType === 'kuda') {
+            let temp = JSON.parse(localStorage.getItem('kudaFormTemp') || '{}');
+            temp.beneficiaryBank = bank.name;
+            localStorage.setItem('kudaFormTemp', JSON.stringify(temp));
+            localStorage.removeItem('formSelectBankType');
+            window.location.href = 'kudaform.html';
           }
         };
         bankList.appendChild(div);

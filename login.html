@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    .container { max-width: 350px; margin: 60px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 30px 20px; }
+    h2 { text-align: center; color: #1a73e8; }
+    label { display: block; margin-top: 18px; color: #333; font-size: 14px; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; margin-top: 6px; font-size: 15px; }
+    button { width: 100%; padding: 12px; background: #1a73e8; color: #fff; border: none; border-radius: 6px; font-weight: bold; margin-top: 22px; cursor: pointer; }
+    button:hover { background: #155ab6; }
+    .register-link { text-align: center; margin-top: 18px; font-size: 14px; }
+    .register-link a { color: #1a73e8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" name="username" required>
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <div class="register-link">Don't have an account? <a href="register.html">Register</a></div>
+  </div>
+  <script>
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const username = this.username.value.trim();
+      const password = this.password.value;
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.username === username && u.password === password);
+      if (!user) {
+        alert('Invalid credentials');
+        return;
+      }
+      localStorage.setItem('currentUser', JSON.stringify({ username }));
+      window.location.href = 'index.html';
+    };
+  </script>
+</body>
+</html>
