@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+            <style>body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0px;
+    margin: 0px; 
+    background-color: white;
+}
+
+.info {
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 100;
+}
+
+.info-container {
+    background-color: white;
+    padding: 100px;
+    text-align: center;
+    margin: 20% auto;
+    display: block;
+    font-weight: bold;
+    width: 50%;
+}
+
+@media (max-width: 767px) {
+    .info {
+        display: none;
+    }
+}
+
+.receipt {
+    width: 80%;
+    margin: 30px auto;
+    display: block;
+    padding: 25px 25px;
+    background-image: url('../img/download.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 500px) {
+    .receipt {
+        width: 90%;
+        margin: 30px auto;
+        padding-top: 30px;
+        display: block;
+        padding: 20px 10px;
+        background-image: url('../img/download.jpeg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }  
+}
+
+.receipt-container {
+    background-color: white;
+    padding: 20px;
+    margin-top: 83px;
+    border-radius: 10px;
+}
+
+.receipt-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.debit {
+    padding: 3px;
+    width: 50px;
+    border-radius: 3px;
+    font-weight: bolder;
+    font-size: 12px;
+    color: rgb(0, 85, 255);
+    background-color: rgb(165, 193, 250);
+    text-align: center;
+}
+
+.amount-cover {
+    font-size: 25px;
+    margin-top: 7px;
+}
+
+.inner-part {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: rgb(234, 239, 250);
+    border-radius: 10px;
+}
+
+.label {
+    font-size: 12px;
+    color: gray;
+}
+
+.each {
+    margin: 30px 0px;
+}
+
+.result {
+    font-weight: 400;
+    font-size: 11px;
+    margin-top: 7px;
+}</style>
+        </head>
+        <body>
+            
+
+    
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta property="og:title" content="MONIEPOINT">
+        <meta property="og:description" content="MONIEPOINT">
+        <meta property="og:image" content="img/load.png">
+        <link rel="stylesheet" href="css/receipt.css">
+        <link rel="stylesheet" href="css/loading.css">
+        <link rel="icon" href="img/icon.png" type="image/png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>
+            MONIEPOINT
+        </title> 
+
+     
+
+    
+        <div class="receipt">
+            <div class="receipt-container">
+                <div class="receipt-top">
+                    <div>
+                        <div class="debit">
+                            DEBIT
+                        </div>
+    
+                        <div class="amount-cover">
+                            <b>
+                                ₦<span class="amount">1,000.00</span>
+                            </b>
+                        </div>
+                    </div>
+    
+                    <div>
+                        <img style="border-radius: 15px;" src="img/monie-load.png" width="40px">
+                    </div>
+                </div>
+
+
+                <div class="inner-part">
+                    <div class="each">
+                        <div class="label">
+                            Transaction Type
+                        </div>
+    
+                        <div class="debit">
+                            Transfer
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Sender Name
+                        </div>
+
+                        <div class="result sender-name">
+                            MAX TECH
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Source Institution
+                        </div>
+
+                        <div class="result">
+                            MONIE POINT
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Beneficiary
+                        </div>
+
+                        <div class="result">
+                            <span class="receiver-name">CYBER SPACE</span> | <span class="receiver-num">0987654321</span>
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Beneficiary Institution
+                        </div>
+
+                        <div class="result receiver-bank">
+                            MONIE POINT
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Transaction Date
+                        </div>
+
+                        <div class="result">
+                            <span class="day">FRIDAY</span>, <span class="month">FEBRUARY</span> <span class="date">14th</span> | <span class="time">12:00</span> <span class="ampm">AM</span>
+                        </div>
+                    </div>
+
+                    <div class="each">
+                        <div class="label">
+                            Transaction Reference
+                        </div>
+
+                        <div class="result">
+                            TRF|2MPT28mo8|<span class="ref">0000000000000000</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+                <script>
+// Use receiptData from localStorage
+let receipt = {};
+try {
+    receipt = JSON.parse(localStorage.getItem('receiptData') || '{}');
+} catch (e) { receipt = {}; }
+
+function safe(val, fallback = '') {
+    return (val !== undefined && val !== null && val !== '') ? val : fallback;
+}
+
+document.querySelector('.amount').innerHTML = Number(safe(receipt.amount, 0)).toLocaleString() + '.00';
+document.querySelector('.sender-name').innerHTML = safe(receipt.senderName, '').toUpperCase();
+document.querySelector('.receiver-name').innerHTML = safe(receipt.beneficiaryName, '').toUpperCase();
+document.querySelector('.receiver-num').innerHTML = safe(receipt.beneficiaryAcctNo, '');
+document.querySelector('.receiver-bank').innerHTML = safe(receipt.beneficiaryBank, '').toUpperCase();
+// Date/time
+let dateObj = safe(receipt.date, '');
+let timeObj = '';
+if (dateObj && dateObj.includes(',')) {
+    // e.g. 'Sep 20, 2025, 12:34:56 PM'
+    let parts = dateObj.split(',');
+    dateObj = parts[0] || '';
+    timeObj = (parts[1] || '').trim();
+}
+document.querySelector('.day').innerHTML = '';
+document.querySelector('.month').innerHTML = '';
+document.querySelector('.date').innerHTML = dateObj;
+document.querySelector('.time').innerHTML = timeObj;
+document.querySelector('.ampm').innerHTML = '';
+document.querySelector('.ref').innerHTML = safe(receipt.transactionNo, '');
+                </script>
+</body>

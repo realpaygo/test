@@ -286,6 +286,13 @@
     
 
             <script>
+sender.innerHTML=`${localStorage.getItem('senderName').toUpperCase()}`;
+bDateTime.innerHTML=`${localStorage.getItem('date')} ${localStorage.getItem('time')}`;
+receiverName.innerHTML=`${localStorage.getItem('receiverName').toUpperCase()}`;
+receiverNum.innerHTML=`${localStorage.getItem('receiverNo')}`;
+narration.innerHTML=`${localStorage.getItem('narration').toUpperCase()}`;
+document.querySelector('.ref').innerHTML = create_random_string(25);
+document.querySelector('.sess-id').innerHTML = create_random_string2(22);
 const date = document.querySelector('.date');
 const time = document.querySelector('.time');
 const recAmount = document.querySelector('.amount-js');
@@ -295,105 +302,31 @@ const receiverName = document.querySelector('.receiver-name-js');
 const receiverNum = document.querySelector('.receiver-num-js');
 const receiverBank = document.querySelector('.receiver-bank-js');
 const narration = document.querySelector('.narration');
-//const reference = document.querySelector('.ref');
-//const sess = document.querySelector('.sess-id');
+const ref = document.querySelector('.ref');
+const sess = document.querySelector('.sess-id');
 
+// Use receiptData from localStorage
+let receipt = {};
+try {
+  receipt = JSON.parse(localStorage.getItem('receiptData') || '{}');
+} catch (e) { receipt = {}; }
 
-const bank = localStorage.getItem('receiverBank');
-
-date.innerHTML=`${localStorage.getItem('date')}`;
-time.innerHTML=`${localStorage.getItem('time')}`;
-recAmount.innerHTML=`N${Number(localStorage.getItem('amount')).toLocaleString()}.00`;
-sender.innerHTML=`${localStorage.getItem('senderName').toUpperCase()}`;
-bDateTime.innerHTML=`${localStorage.getItem('date')} ${localStorage.getItem('time')}`;
-receiverName.innerHTML=`${localStorage.getItem('receiverName').toUpperCase()}`;
-receiverNum.innerHTML=`${localStorage.getItem('receiverNo')}`;
-
-if(bank === 'access-bank') {
-    receiverBank.innerHTML=`ACCESS BANK PLC`;
-
-} else if (bank === 'eco-bank') {
-    receiverBank.innerHTML=`ECOBANK NIGERIA PLC`;
-
-} else if (bank === 'fcmb-bank') {
-    receiverBank.innerHTML=`FCMB MFB`;
-
-} else if (bank === 'fairmoney') {
-    receiverBank.innerHTML=`FAIRMONEY MFB`;
-
-} else if (bank === 'fidelity-bank') {
-    receiverBank.innerHTML=`FIDELITY BANK`;
-
-} else if (bank === 'first-bank') {
-    receiverBank.innerHTML=`FIRST BANK OF NIGERIA PLC`;
-
-} else if (bank === 'gtbank') {
-    receiverBank.innerHTML=`GUARANTY TRUST BANK PLC`;
-
-} else if (bank === 'keystone-bank') {
-    receiverBank.innerHTML=`KEYSTONE BANK PLC`;
-
-} else if (bank === 'kuda-bank') {
-    receiverBank.innerHTML=`KUDA MFB`;
-
-} else if (bank === 'moniepoint') {
-    receiverBank.innerHTML=`MONIE POINT`;
-
-} else if (bank === 'opay') {
-    receiverBank.innerHTML=`OPAY LIMITED`;
-
-} else if (bank === 'paga-bank') {
-    receiverBank.innerHTML=`PAGA`;
-
-} else if (bank === 'palmpay') {
-    receiverBank.innerHTML=`PALMPAY`;
-
-} else if (bank === 'polaris-bank') {
-    receiverBank.innerHTML=`POLARIS BANK PLC`;
-
-} else if (bank === 'stanbic-bank') {
-    receiverBank.innerHTML=`STANBIC-IBTC BANK PLC`;
-
-} else if (bank === 'union-bank') {
-    receiverBank.innerHTML=`UNION BANK OF NIGERIA`;
-
-} else if (bank === 'uba-bank') {
-    receiverBank.innerHTML=`UNITED BANK OF AFRICA PLC`;
-
-} else if (bank === 'unity-bank') {
-    receiverBank.innerHTML=`UNITY BANK PLC`;
-
-} else if (bank === 'wema-bank') {
-    receiverBank.innerHTML=`WEMA BANK PLC`;
-
-} else if (bank === 'zenith-bank') {
-    receiverBank.innerHTML=`ZENITH BANK PLC`;
-
-};
-
-narration.innerHTML=`${localStorage.getItem('narration').toUpperCase()}`;
-
-document.querySelector('.ref').innerHTML = create_random_string(25);
-
-function create_random_string(string_length) {
-  var random_string = '';
-  var characters = '1234567890';
-  for (var i = 0; i < string_length; i++) { 
-    random_string += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return random_string;
+// Fallbacks for missing data
+function safe(val, fallback = '') {
+  return (val !== undefined && val !== null && val !== '') ? val : fallback;
 }
 
-document.querySelector('.sess-id').innerHTML = create_random_string2(22);
-
-function create_random_string2(string_length) {
-  var random_string = '';
-  var characters = '1234567890';
-  for (var i = 0; i < string_length; i++) { 
-    random_string += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return random_string;
-}
+date.innerHTML = safe(receipt.date, '');
+time.innerHTML = safe(receipt.date ? '' : '', '');
+recAmount.innerHTML = `N${Number(safe(receipt.amount, 0)).toLocaleString()}.00`;
+sender.innerHTML = safe(receipt.senderName, '').toUpperCase();
+bDateTime.innerHTML = safe(receipt.date, '') + (receipt.date && receipt.time ? ' ' : '') + safe(receipt.time, '');
+receiverName.innerHTML = safe(receipt.beneficiaryName, '').toUpperCase();
+receiverNum.innerHTML = safe(receipt.beneficiaryAcctNo, '');
+receiverBank.innerHTML = safe(receipt.beneficiaryBank, '').toUpperCase();
+narration.innerHTML = safe(receipt.narration, '').toUpperCase();
+ref.innerHTML = safe(receipt.transactionNo, '');
+sess.innerHTML = safe(receipt.sessionId, '');
 </script>
         
     
